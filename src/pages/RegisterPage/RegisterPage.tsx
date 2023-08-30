@@ -1,10 +1,9 @@
 import { Col, Divider, Form, Input, Row } from "antd";
 import { useNavigate } from "react-router-dom";
-import {formItemLayout, REGEX} from "../../utils";
+import { formItemLayout, REGEX } from "../../utils";
 import { auth } from "../../firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import AuthenticationLayout from "../../components/layout/AuthenticationLayout/AuthenticationLayout";
-
 
 const RegisterPage = () => {
   const [form] = Form.useForm();
@@ -12,12 +11,16 @@ const RegisterPage = () => {
 
   const onFinish = async (values: any) => {
     try {
-        const res = await  createUserWithEmailAndPassword(auth, values.email, values.password);
-        console.log("res: ", res)
-    }catch (err) {  
-        console.log("err: ", err);
+      const res = await createUserWithEmailAndPassword(
+        auth,
+        values.email,
+        values.password,
+      );
+      console.log("res: ", res);
+    } catch (err) {
+      console.log("err: ", err);
     }
-    console.log("value: ", values)
+    console.log("value: ", values);
   };
   return (
     <AuthenticationLayout>
@@ -47,16 +50,16 @@ const RegisterPage = () => {
                           return Promise.resolve();
                         } else {
                           return Promise.reject(
-                            new Error("Please enter a valid email!")
+                            new Error("Please enter a valid email!"),
                           );
                         }
                       } else {
                         return Promise.reject(
-                          new Error("Please input your email!")
+                          new Error("Please input your email!"),
                         );
                       }
                     },
-                    required: true
+                    required: true,
                   },
                 ]}
                 label={"Email"}
@@ -89,7 +92,7 @@ const RegisterPage = () => {
                         return Promise.resolve();
                       }
                       return Promise.reject(
-                        "The two passwords that you entered do not match!"
+                        "The two passwords that you entered do not match!",
                       );
                     },
                   }),
@@ -107,7 +110,7 @@ const RegisterPage = () => {
               </div>
             </Form>
             <Divider style={{ color: "grey", fontSize: "14px" }}>
-            Already have a IScholarship account?
+              Already have a IScholarship account?
             </Divider>
             <div className="flex justify-center">
               <button

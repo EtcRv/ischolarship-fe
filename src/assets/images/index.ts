@@ -1,0 +1,1 @@
+export {default as scholarship1} from './scholarship1.png'
