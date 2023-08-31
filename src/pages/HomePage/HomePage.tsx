@@ -2,8 +2,9 @@ import DefaultLayout from "src/components/layout/DefaultLayout/DefaultLayout";
 import { DegreeType, ScholarshipType, Scholarship } from "src/models";
 import ListScholarship from "./components/ListScholarship";
 import { scholarship1 } from "src/assets";
+import { useState } from "react";
 
-const sampleScholarshipData: Array<Scholarship> = [
+const sampleSchoolScholarshipData: Array<Scholarship> = [
   {
     id: "1",
     name: "Test Scholarship 1",
@@ -52,13 +53,164 @@ const sampleScholarshipData: Array<Scholarship> = [
     },
     description: "Test Description about Scholarship",
   },
+  {
+    id: "3",
+    name: "Test Scholarship 3",
+    image: scholarship1,
+    organization: "HUST HUST",
+    location: "Viet Nam",
+    applyLocation: "Huster",
+    ranking: 1,
+    deadline: "nope",
+    type: ScholarshipType.ACADEMIC,
+    value: "Big Value",
+    level: DegreeType.UNIVERSITY,
+    field: "",
+    link: "",
+    requirement: {
+      score: {
+        CPA: 4.0,
+      },
+      competitions: true,
+      experience: true,
+      activities: "Test activities",
+    },
+    description: "Test Description about Scholarship",
+  },
+  {
+    id: "4",
+    name: "Test Scholarship 4",
+    image: scholarship1,
+    organization: "HUST HUST",
+    location: "Viet Nam",
+    applyLocation: "Huster",
+    ranking: 1,
+    deadline: "nope",
+    type: ScholarshipType.ACADEMIC,
+    value: "Big Value",
+    level: DegreeType.UNIVERSITY,
+    field: "",
+    link: "",
+    requirement: {
+      score: {
+        CPA: 4.0,
+      },
+      competitions: true,
+      experience: true,
+      activities: "Test activities",
+    },
+    description: "Test Description about Scholarship",
+  },
+];
+
+const sampleCorporateScholarshipData: Array<Scholarship> = [
+  {
+    id: "1",
+    name: "Test Corporate Scholarship 1",
+    image: scholarship1,
+    organization: "HUST",
+    location: "Viet Nam",
+    applyLocation: "Hust Student",
+    ranking: 1,
+    deadline: "nope",
+    type: ScholarshipType.FULL,
+    value: "Big Value",
+    level: DegreeType.UNIVERSITY,
+    field: "",
+    link: "",
+    requirement: {
+      score: {
+        CPA: 4.0,
+      },
+      competitions: true,
+      experience: true,
+      activities: "Test activities",
+    },
+    description: "Test Description about Scholarship",
+  },
+  {
+    id: "2",
+    name: "Test Corporate Scholarship 2",
+    image: scholarship1,
+    organization: "HUST HUST",
+    location: "Viet Nam",
+    applyLocation: "Huster",
+    ranking: 1,
+    deadline: "nope",
+    type: ScholarshipType.ACADEMIC,
+    value: "Big Value",
+    level: DegreeType.UNIVERSITY,
+    field: "",
+    link: "",
+    requirement: {
+      score: {
+        CPA: 4.0,
+      },
+      competitions: true,
+      experience: true,
+      activities: "Test activities",
+    },
+    description: "Test Description about Scholarship",
+  },
+  {
+    id: "3",
+    name: "Test Corporate Scholarship 3",
+    image: scholarship1,
+    organization: "HUST HUST",
+    location: "Viet Nam",
+    applyLocation: "Huster",
+    ranking: 1,
+    deadline: "nope",
+    type: ScholarshipType.ACADEMIC,
+    value: "Big Value",
+    level: DegreeType.UNIVERSITY,
+    field: "",
+    link: "",
+    requirement: {
+      score: {
+        CPA: 4.0,
+      },
+      competitions: true,
+      experience: true,
+      activities: "Test activities",
+    },
+    description: "Test Description about Scholarship",
+  },
+  {
+    id: "4",
+    name: "Test Corporate Scholarship 4",
+    image: scholarship1,
+    organization: "HUST HUST",
+    location: "Viet Nam",
+    applyLocation: "Huster",
+    ranking: 1,
+    deadline: "nope",
+    type: ScholarshipType.ACADEMIC,
+    value: "Big Value",
+    level: DegreeType.UNIVERSITY,
+    field: "",
+    link: "",
+    requirement: {
+      score: {
+        CPA: 4.0,
+      },
+      competitions: true,
+      experience: true,
+      activities: "Test activities",
+    },
+    description: "Test Description about Scholarship",
+  },
 ];
 
 const HomePage = () => {
+  const [scholarshipData, setScholarshipData] = useState<Array<Scholarship>>(
+    sampleSchoolScholarshipData,
+  );
+  const [scholarshipDataType, setScholarshipDataType] = useState("school");
   return (
     <DefaultLayout>
       <div className="flex px-20 justify-between my-10">
-        <div className="bg-white max-w-md flex-col rounded py-4 px-6">
+        <div className="bg-white h-fit max-w-md flex-col rounded py-4 px-6">
           <span className="text-black text-start text-base">Filter</span>
           <div className="flex-col my-4">
             <label
@@ -137,10 +289,39 @@ const HomePage = () => {
             </div>
           </form>
 
-          <div className="mt-4">
-            <ListScholarship
-              scholarships={sampleScholarshipData}
-            ></ListScholarship>
+          <div className="mt-4 flex-col">
+            <h2 className="mb-4 text-[25px] font-sans">
+              Prominent scholarship
+            </h2>
+            <div className="flex w-full border-grey-200 border-b-[2px]">
+              <button
+                className={` p-2.5 ${
+                  scholarshipDataType === "school"
+                    ? "border-black border-b-[2px]"
+                    : ""
+                }`}
+                onClick={() => {
+                  setScholarshipData(sampleSchoolScholarshipData);
+                  setScholarshipDataType("school");
+                }}
+              >
+                University scholarship
+              </button>
+              <button
+                className={` p-2.5 ${
+                  scholarshipDataType === "corporate"
+                    ? "border-black border-b-[2px]"
+                    : ""
+                }`}
+                onClick={() => {
+                  setScholarshipData(sampleCorporateScholarshipData);
+                  setScholarshipDataType("corporate");
+                }}
+              >
+                Corporate scholarship
+              </button>
+            </div>
+            <ListScholarship scholarships={scholarshipData}></ListScholarship>
           </div>
         </div>
       </div>
