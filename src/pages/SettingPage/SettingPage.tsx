@@ -29,7 +29,7 @@ const SettingPage = () => {
                 <input
                   type="text"
                   className="px-3 py-3 bg-white border-2 border-slate-600 w-full"
-                  placeholder="Full Name"
+                  placeholder="Current Password"
                   value={currentPassword}
                   onChange={(e) => setCurrentPassword(e.currentTarget.value)}
                 />
@@ -39,7 +39,7 @@ const SettingPage = () => {
                 <input
                   type="text"
                   className="px-3 py-3 bg-white border-2 border-slate-600 w-full"
-                  placeholder="Full Name"
+                  placeholder="New Password"
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.currentTarget.value)}
                 />
@@ -51,7 +51,7 @@ const SettingPage = () => {
                 <input
                   type="text"
                   className="px-3 py-3 bg-white border-2 border-slate-600 w-full"
-                  placeholder="Full Name"
+                  placeholder="Re-enter New Password"
                   value={rePassword}
                   onChange={(e) => setRePassword(e.currentTarget.value)}
                 />

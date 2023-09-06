@@ -3,6 +3,7 @@ import DefaultLayout from "src/components/layout/DefaultLayout/DefaultLayout";
 import ProfilePageSideBar from "src/components/userPageSideBar/ProfilePageSideBar";
 import { DegreeType, Scholarship, ScholarshipType } from "src/models";
 import ScholarshipShortlisted from "./components/ScholarshipShortlisted";
+import { useState } from "react";
 
 const sampleShortlisted: Array<Scholarship> = [
   {
@@ -80,6 +81,14 @@ const sampleShortlisted: Array<Scholarship> = [
 ];
 
 const ShortlistedPage = () => {
+  const [shortlisted, setShortlisted] = useState(sampleShortlisted);
+
+  const removeScholarship = (id: string) => {
+    const newArr = shortlisted.filter((scholarship: Scholarship) => {
+      if (scholarship.id !== id) return scholarship;
+    });
+    setShortlisted(newArr);
+  };
   return (
     <DefaultLayout>
       <div className="flex px-20 h-full w-full my-10">
@@ -92,7 +101,7 @@ const ShortlistedPage = () => {
             <div className="text-base">Add information about yourself</div>
           </div>
           <div className="flex-col p-6 text-start items-center">
-            {sampleShortlisted.map((scholarship: Scholarship, idx: any) => {
+            {shortlisted.map((scholarship: Scholarship, idx: any) => {
               return (
                 <div
                   className="my-4 bg-white border-2 border-grey-200 drop-shadow-md shadow-stone-100"
@@ -100,6 +109,7 @@ const ShortlistedPage = () => {
                 >
                   <ScholarshipShortlisted
                     data={scholarship}
+                    removeScholarship={removeScholarship}
                   ></ScholarshipShortlisted>
                 </div>
               );

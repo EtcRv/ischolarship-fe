@@ -6,6 +6,8 @@ import { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { CountryDropdown } from "react-country-region-selector";
+import { useDispatch } from "react-redux";
+import { updateUser } from "src/store/userSlice";
 
 enum Gender {
   Male = "Male",
@@ -14,6 +16,7 @@ enum Gender {
 }
 
 const UpdateProfile = (props: any) => {
+  const dispatch = useDispatch();
   const [gender, setGender] = useState(props.gender);
   const [dob, setDob] = useState(props.dob);
   const [nationality, setNationality] = useState(props.nationality);
@@ -111,13 +114,18 @@ const UpdateProfile = (props: any) => {
           </div>
         </div>
         <div className="flex-col">
-          <div className="flex my-6">
-            <CiLocationOn className="my-auto mx-2" />
-            <span className="font-bold">Current location: </span>
+          <div className="flex-col my-6">
+            <div className="flex">
+              <CiLocationOn className="my-auto mx-2" />
+              <span className="font-bold">Current location: </span>
+            </div>
             <div className="font-normal mx-2">
               <CountryDropdown
                 value={location}
-                onChange={(val) => setLocation(val)}
+                onChange={(val) => {
+                  setLocation(val);
+                  console.log("val: ", val);
+                }}
               />
             </div>
           </div>
@@ -167,6 +175,18 @@ const UpdateProfile = (props: any) => {
             props.updateLocation(location);
             props.updatePhone(phone);
             props.updateEmail(email);
+            dispatch(
+              updateUser({
+                user: {
+                  gender,
+                  dob,
+                  nationality,
+                  location,
+                  phone,
+                  email,
+                },
+              }),
+            );
             props.changePageStatus("profile");
           }}
         >

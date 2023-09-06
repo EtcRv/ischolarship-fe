@@ -1,4 +1,4 @@
-import {LoginPage, RegisterPage, HomePage, ProfilePage, ShortlistedPage, RecommendPage, SettingPage} from "../pages";
+import {LoginPage, RegisterPage, HomePage, ProfilePage, ShortlistedPage, RecommendPage, SettingPage, ScholarshipDetailPage} from "../pages";
 
 const routes = [
     {
@@ -28,6 +28,10 @@ const routes = [
     {
         path: '/settings',
         component: SettingPage
+    },
+    {
+        path: '/scholarship/:id',
+        component: ScholarshipDetailPage
     }
 ]
 

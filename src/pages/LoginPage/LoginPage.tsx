@@ -9,10 +9,13 @@ import {
 } from "firebase/auth";
 import AuthenticationLayout from "src/components/layout/AuthenticationLayout/AuthenticationLayout";
 import { FcGoogle } from "react-icons/fc";
+import { useDispatch } from "react-redux";
+import { updateLoginStatus, updateUser } from "src/store/userSlice";
 
 const LoginPage = () => {
   const [form] = Form.useForm();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const onFinish = async (values: any) => {
     try {
@@ -21,6 +24,21 @@ const LoginPage = () => {
         values.email,
         values.password,
       );
+
+      dispatch(updateLoginStatus());
+      dispatch(
+        updateUser({
+          user: {
+            gender: "Male",
+            dob: new Date("2023-05-08"),
+            nationality: "Vietnam",
+            location: "Vietnam",
+            phone: "123456",
+            email: "dungbacninh12@gmail.com",
+          },
+        }),
+      );
+      navigate("/");
       console.log("res: ", res);
     } catch (err) {
       console.log("err: ", err);

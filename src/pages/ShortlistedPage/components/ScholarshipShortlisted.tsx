@@ -7,9 +7,12 @@ import { CiLocationOn } from "react-icons/ci";
 import { BiEdit } from "react-icons/bi";
 import { AiOutlineStar } from "react-icons/ai";
 import { IoMdRemove } from "react-icons/io";
+import { useNavigate } from "react-router-dom";
 
 const ScholarshipShortlisted = (props: any) => {
   const data: Scholarship = props.data;
+  const navigate = useNavigate();
+
   return (
     <div className="flex-col px-6 py-4 w-full">
       <div className="flex w-full justify-between">
@@ -44,11 +47,17 @@ const ScholarshipShortlisted = (props: any) => {
         </div>
       </div>
       <div className="flex w-full justify-between">
-        <button className="flex mt-2 rounded bg-white text-gray-400 p-2 items-center pointer border-[1px] border-gray-400 hover:border-black hover:text-black">
+        <button
+          className="flex mt-2 rounded bg-white text-gray-400 p-2 items-center pointer border-[1px] border-gray-400 hover:border-black hover:text-black"
+          onClick={() => props.removeScholarship(data.id)}
+        >
           <IoMdRemove className="mr-2" />
           Unshortlisted
         </button>
-        <button className="flex mt-2 rounded bg-green-400 text-white p-2.5 items-center pointer border-[1px] border-grey-200 hover:bg-green-500">
+        <button
+          className="flex mt-2 rounded bg-green-400 text-white p-2.5 items-center pointer border-[1px] border-grey-200 hover:bg-green-500"
+          onClick={() => navigate(`/scholarship/${data.id}`)}
+        >
           <BiEdit className="mr-2" />
           View & Apply
         </button>

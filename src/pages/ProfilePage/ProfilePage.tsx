@@ -5,13 +5,17 @@ import "react-datepicker/dist/react-datepicker.css";
 
 import Profile from "./components/Profile";
 import UpdateProfile from "./components/UpdateProfile";
+import { useSelector } from "react-redux";
 
 const ProfilePage = () => {
-  const [gender, setGender] = useState("Not-Set");
-  const [dob, setDob] = useState(new Date());
-  const [nationality, setNationality] = useState("Not-Set");
-  const [location, setLocation] = useState("Not-Set");
-  const [phone, setPhone] = useState("Not-Set");
+  const userInfor = useSelector((state: any) => state.user.user);
+
+  const [gender, setGender] = useState(userInfor.gender);
+  const [dob, setDob] = useState(new Date(userInfor.dob));
+  // const [dob, setDob] = useState(userInfor.dob);
+  const [nationality, setNationality] = useState(userInfor.nationality);
+  const [location, setLocation] = useState(userInfor.location);
+  const [phone, setPhone] = useState(userInfor.phone);
   const [email, setEmail] = useState("dungbacninh12@gmail.com");
   const [pageStatus, setPageStatus] = useState("profile");
 
