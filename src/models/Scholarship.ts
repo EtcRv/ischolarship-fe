@@ -1,19 +1,19 @@
 export type Scholarship = {
-    id: string;
-    name: string;
-    image: string;
+    _id: string;
+    title: string;
+    image?: string;
     organization: string;
-    location: string;
-    applyLocation?: string;
-    ranking?: number;
+    // location: string;
+    // applyLocation?: string;
+    // ranking?: number;
     deadline: string;
-    type: ScholarshipType;
-    value?: string;
-    level: DegreeType;
-    field: string;
+    type: string;
+    "benefits/value": string;
+    education_level: string;
+    majors: string;
     link: string;
-    requirement: Requirement;
-    description: string;
+    requirements: string;
+    // description: string;
 }
 
 export interface Score {

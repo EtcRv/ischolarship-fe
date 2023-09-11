@@ -4,23 +4,35 @@ import { formItemLayout, REGEX } from "../../utils";
 import { auth } from "../../firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import AuthenticationLayout from "../../components/layout/AuthenticationLayout/AuthenticationLayout";
+import AuthenticationServices from "src/services/AuthenticationServices/AuthenticationServices";
+import { useState } from "react";
+import SuccessMessage from "src/components/successMessage/SuccessMessage";
 
 const RegisterPage = () => {
   const [form] = Form.useForm();
   const navigate = useNavigate();
+  const [error, setError] = useState("");
 
   const onFinish = async (values: any) => {
     try {
-      const res = await createUserWithEmailAndPassword(
-        auth,
-        values.email,
-        values.password,
-      );
-      console.log("res: ", res);
-    } catch (err) {
-      console.log("err: ", err);
+      // await createUserWithEmailAndPassword(
+      //   auth,
+      //   values.email,
+      //   values.password,
+      // );
+
+      const res = await AuthenticationServices.register({
+        user_name: values.name,
+        email: values.email,
+        password: values.password,
+      });
+
+      SuccessMessage("Success", "Register successfull");
+      navigate("/login");
+    } catch (err: any) {
+      console.log("err: ", err.response);
+      setError(err.response.data.detail);
     }
-    console.log("value: ", values);
   };
   return (
     <AuthenticationLayout>
@@ -103,6 +115,11 @@ const RegisterPage = () => {
               >
                 <Input.Password placeholder="Please input password" />
               </Form.Item>
+              <div className="my-2 flex justify-center">
+                {error.length > 0 && (
+                  <span className="text-red-600">{error}</span>
+                )}
+              </div>
               <div className="flex justify-center">
                 <button className="rounded-lg border-[1px] bg-white px-[20px] py-2 pointer border-grey-200">
                   Register

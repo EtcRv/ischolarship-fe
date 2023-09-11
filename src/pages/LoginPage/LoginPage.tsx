@@ -11,36 +11,49 @@ import AuthenticationLayout from "src/components/layout/AuthenticationLayout/Aut
 import { FcGoogle } from "react-icons/fc";
 import { useDispatch } from "react-redux";
 import { updateLoginStatus, updateUser } from "src/store/userSlice";
+import { useEffect, useState } from "react";
+import AuthenticationServices from "src/services/AuthenticationServices/AuthenticationServices";
+import SuccessMessage from "src/components/successMessage/SuccessMessage";
 
 const LoginPage = () => {
   const [form] = Form.useForm();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [error, setError] = useState("");
 
   const onFinish = async (values: any) => {
     try {
-      const res = await signInWithEmailAndPassword(
-        auth,
-        values.email,
-        values.password,
-      );
+      // const res = await signInWithEmailAndPassword(
+      //   auth,
+      //   values.email,
+      //   values.password,
+      // );
+
+      const res = await AuthenticationServices.login({
+        email: values.email,
+        password: values.password,
+      });
 
       dispatch(updateLoginStatus());
       dispatch(
         updateUser({
           user: {
+            user_id: res.data.user.id,
+            user_name: res.data.user.user_name,
             gender: "Male",
             dob: new Date("2023-05-08"),
             nationality: "Vietnam",
             location: "Vietnam",
             phone: "123456",
-            email: "dungbacninh12@gmail.com",
+            email: res.data.user.email,
           },
         }),
       );
-      navigate("/");
       console.log("res: ", res);
-    } catch (err) {
+      SuccessMessage("Success", "Login successfull");
+      navigate("/");
+    } catch (err: any) {
+      setError(err.response.data.detail);
       console.log("err: ", err);
     }
   };
@@ -99,6 +112,11 @@ const LoginPage = () => {
               >
                 <Input.Password placeholder="Please input password" />
               </Form.Item>
+              <div className="my-2 flex justify-center">
+                {error.length > 0 && (
+                  <span className="text-red-600">{error}</span>
+                )}
+              </div>
               <div className="flex justify-center">
                 <button className="rounded-lg border-[1px] bg-white px-[20px] py-2 pointer border-grey-200">
                   Login

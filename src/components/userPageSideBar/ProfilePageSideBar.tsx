@@ -7,6 +7,7 @@ import {
   AiOutlineSetting,
   AiOutlineLike,
 } from "react-icons/ai";
+import { useSelector } from "react-redux";
 
 type userSideBarType = {
   name: string;
@@ -42,7 +43,7 @@ const ProfilePageSideBar = () => {
   const current_function = url[url.length - 1];
   const navigate = useNavigate();
   const [avatar, setAvatar] = useState(userAvatar);
-  const [fullName, setFullName] = useState("Nguyen Khac Dung");
+  const userName = useSelector((state: any) => state.user.user.user_name);
 
   const handleChange = (e: any) => {
     setAvatar(URL.createObjectURL(e.target.files[0]));
@@ -63,7 +64,7 @@ const ProfilePageSideBar = () => {
             />
           </label>
         </div>
-        <div className="font-bold font-serif text-lg">{fullName}</div>
+        <div className="font-bold font-serif text-lg">{userName}</div>
       </div>
       <div>
         <ul className="list-none mx-4">

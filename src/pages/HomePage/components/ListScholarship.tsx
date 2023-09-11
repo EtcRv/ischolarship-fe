@@ -1,5 +1,5 @@
 import { Scholarship } from "src/models";
-import ScholarshipComponent from "./ScholarshipComponent";
+import ScholarshipComponent from "src/components/scholarshipComponent/ScholarshipComponent";
 
 const ListScholarship = (props: any) => {
   return (
@@ -10,7 +10,11 @@ const ListScholarship = (props: any) => {
             className="my-4 bg-white border-2 border-grey-200 drop-shadow-md shadow-stone-100"
             key={idx}
           >
-            <ScholarshipComponent data={scholarship}></ScholarshipComponent>
+            <ScholarshipComponent
+              data={scholarship}
+              isShorlisted={false}
+              removeScholarship={(id: string) => {}}
+            ></ScholarshipComponent>
           </div>
         );
       })}

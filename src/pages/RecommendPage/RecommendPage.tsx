@@ -2,86 +2,14 @@ import { scholarship1 } from "src/assets";
 import DefaultLayout from "src/components/layout/DefaultLayout/DefaultLayout";
 import ProfilePageSideBar from "src/components/userPageSideBar/ProfilePageSideBar";
 import { DegreeType, Scholarship, ScholarshipType } from "src/models";
-import ScholarshipRecommend from "./components/ScholarshipRecommend";
 import { useState } from "react";
 import { IoMdRemoveCircleOutline } from "react-icons/io";
 import { AiOutlinePlus } from "react-icons/ai";
 import SelectedFilter from "./components/SelectedFilter";
+import { useSelector } from "react-redux";
+import NotiEnableRecommend from "src/components/notiEnableRecommend/NotiEnableRecommend";
 
-const sampleRecommend: Array<Scholarship> = [
-  {
-    id: "1",
-    name: "Test Scholarship 1",
-    image: scholarship1,
-    organization: "HUST",
-    location: "Viet Nam",
-    applyLocation: "Hust Student",
-    ranking: 1,
-    deadline: "nope",
-    type: ScholarshipType.FULL,
-    value: "Big Value",
-    level: DegreeType.UNIVERSITY,
-    field: "",
-    link: "",
-    requirement: {
-      score: {
-        CPA: 4.0,
-      },
-      competitions: true,
-      experience: true,
-      activities: "Test activities",
-    },
-    description: "Test Description about Scholarship",
-  },
-  {
-    id: "2",
-    name: "Test Scholarship 2",
-    image: scholarship1,
-    organization: "HUST HUST",
-    location: "Viet Nam",
-    applyLocation: "Huster",
-    ranking: 1,
-    deadline: "nope",
-    type: ScholarshipType.ACADEMIC,
-    value: "Big Value",
-    level: DegreeType.UNIVERSITY,
-    field: "",
-    link: "",
-    requirement: {
-      score: {
-        CPA: 4.0,
-      },
-      competitions: true,
-      experience: true,
-      activities: "Test activities",
-    },
-    description: "Test Description about Scholarship",
-  },
-  {
-    id: "3",
-    name: "Test Scholarship 3",
-    image: scholarship1,
-    organization: "HUST HUST",
-    location: "Viet Nam",
-    applyLocation: "Huster",
-    ranking: 1,
-    deadline: "nope",
-    type: ScholarshipType.ACADEMIC,
-    value: "Big Value",
-    level: DegreeType.UNIVERSITY,
-    field: "",
-    link: "",
-    requirement: {
-      score: {
-        CPA: 4.0,
-      },
-      competitions: true,
-      experience: true,
-      activities: "Test activities",
-    },
-    description: "Test Description about Scholarship",
-  },
-];
+const sampleRecommend: Array<Scholarship> = [];
 
 const allJobFilterElements = [
   "AI Intern",
@@ -98,7 +26,7 @@ const RecommendPage = () => {
   const [showFilter, setShowFilter] = useState(false);
   const [jobFilter, setJobFilter] = useState(["AI Intern", "AI Engineer"]);
   const [showAddNewJob, setShowAddNewJob] = useState(false);
-
+  const isRecommend = useSelector((state: any) => state.setting.isRecommend);
   return (
     <DefaultLayout>
       <div className="flex px-20 h-full w-full my-10">
@@ -113,8 +41,13 @@ const RecommendPage = () => {
             </div>
           </div>
           <div className="flex-col p-6 text-start items-center">
+            {!isRecommend && (
+              <div className="flex w-full justify-center">
+                <NotiEnableRecommend></NotiEnableRecommend>
+              </div>
+            )}
             <div className="flex w-full justify-end">
-              {!showFilter && (
+              {!showFilter && isRecommend && (
                 <button
                   className="flex mt-2 rounded bg-green-400 text-white p-2.5 items-center pointer border-[1px] border-grey-200 hover:bg-green-500"
                   onClick={() => setShowFilter(true)}
@@ -122,7 +55,7 @@ const RecommendPage = () => {
                   Filter
                 </button>
               )}
-              {showFilter && (
+              {showFilter && isRecommend && (
                 <button
                   className="flex mt-2 rounded bg-red-400 text-white p-2.5 items-center pointer border-[1px] border-grey-200 hover:bg-red-500"
                   onClick={() => setShowFilter(false)}
@@ -131,7 +64,7 @@ const RecommendPage = () => {
                 </button>
               )}
             </div>
-            {showFilter && (
+            {showFilter && isRecommend && (
               <div className="w-full flex-col my-4 bg-white border-2 border-grey-200 drop-shadow-md shadow-stone-100 p-2.5">
                 <span className="text-gray-500 my-2">* Indicates required</span>
                 <div className="flex-col my-2">
@@ -194,18 +127,6 @@ const RecommendPage = () => {
                 </div>
               </div>
             )}
-            {/* {sampleRecommend.map((scholarship: Scholarship, idx: any) => {
-              return (
-                <div
-                  className="my-4 bg-white border-2 border-grey-200 drop-shadow-md shadow-stone-100"
-                  key={idx}
-                >
-                  <ScholarshipRecommend
-                    data={scholarship}
-                  ></ScholarshipRecommend>
-                </div>
-              );
-            })} */}
           </div>
         </div>
       </div>

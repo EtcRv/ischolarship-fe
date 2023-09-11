@@ -2,212 +2,45 @@ import DefaultLayout from "src/components/layout/DefaultLayout/DefaultLayout";
 import { DegreeType, ScholarshipType, Scholarship } from "src/models";
 import ListScholarship from "./components/ListScholarship";
 import { scholarship1 } from "src/assets";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import FilterComponent from "./components/FilterComponent";
-
-const sampleSchoolScholarshipData: Array<Scholarship> = [
-  {
-    id: "1",
-    name: "Test Scholarship 1",
-    image: scholarship1,
-    organization: "HUST",
-    location: "Viet Nam",
-    applyLocation: "Hust Student",
-    ranking: 1,
-    deadline: "nope",
-    type: ScholarshipType.FULL,
-    value: "Big Value",
-    level: DegreeType.UNIVERSITY,
-    field: "",
-    link: "",
-    requirement: {
-      score: {
-        CPA: 4.0,
-      },
-      competitions: true,
-      experience: true,
-      activities: "Test activities",
-    },
-    description: "Test Description about Scholarship",
-  },
-  {
-    id: "2",
-    name: "Test Scholarship 2",
-    image: scholarship1,
-    organization: "HUST HUST",
-    location: "Viet Nam",
-    applyLocation: "Huster",
-    ranking: 1,
-    deadline: "nope",
-    type: ScholarshipType.ACADEMIC,
-    value: "Big Value",
-    level: DegreeType.UNIVERSITY,
-    field: "",
-    link: "",
-    requirement: {
-      score: {
-        CPA: 4.0,
-      },
-      competitions: true,
-      experience: true,
-      activities: "Test activities",
-    },
-    description: "Test Description about Scholarship",
-  },
-  {
-    id: "3",
-    name: "Test Scholarship 3",
-    image: scholarship1,
-    organization: "HUST HUST",
-    location: "Viet Nam",
-    applyLocation: "Huster",
-    ranking: 1,
-    deadline: "nope",
-    type: ScholarshipType.ACADEMIC,
-    value: "Big Value",
-    level: DegreeType.UNIVERSITY,
-    field: "",
-    link: "",
-    requirement: {
-      score: {
-        CPA: 4.0,
-      },
-      competitions: true,
-      experience: true,
-      activities: "Test activities",
-    },
-    description: "Test Description about Scholarship",
-  },
-  {
-    id: "4",
-    name: "Test Scholarship 4",
-    image: scholarship1,
-    organization: "HUST HUST",
-    location: "Viet Nam",
-    applyLocation: "Huster",
-    ranking: 1,
-    deadline: "nope",
-    type: ScholarshipType.ACADEMIC,
-    value: "Big Value",
-    level: DegreeType.UNIVERSITY,
-    field: "",
-    link: "",
-    requirement: {
-      score: {
-        CPA: 4.0,
-      },
-      competitions: true,
-      experience: true,
-      activities: "Test activities",
-    },
-    description: "Test Description about Scholarship",
-  },
-];
-
-const sampleCorporateScholarshipData: Array<Scholarship> = [
-  {
-    id: "1",
-    name: "Test Corporate Scholarship 1",
-    image: scholarship1,
-    organization: "HUST",
-    location: "Viet Nam",
-    applyLocation: "Hust Student",
-    ranking: 1,
-    deadline: "nope",
-    type: ScholarshipType.FULL,
-    value: "Big Value",
-    level: DegreeType.UNIVERSITY,
-    field: "",
-    link: "",
-    requirement: {
-      score: {
-        CPA: 4.0,
-      },
-      competitions: true,
-      experience: true,
-      activities: "Test activities",
-    },
-    description: "Test Description about Scholarship",
-  },
-  {
-    id: "2",
-    name: "Test Corporate Scholarship 2",
-    image: scholarship1,
-    organization: "HUST HUST",
-    location: "Viet Nam",
-    applyLocation: "Huster",
-    ranking: 1,
-    deadline: "nope",
-    type: ScholarshipType.ACADEMIC,
-    value: "Big Value",
-    level: DegreeType.UNIVERSITY,
-    field: "",
-    link: "",
-    requirement: {
-      score: {
-        CPA: 4.0,
-      },
-      competitions: true,
-      experience: true,
-      activities: "Test activities",
-    },
-    description: "Test Description about Scholarship",
-  },
-  {
-    id: "3",
-    name: "Test Corporate Scholarship 3",
-    image: scholarship1,
-    organization: "HUST HUST",
-    location: "Viet Nam",
-    applyLocation: "Huster",
-    ranking: 1,
-    deadline: "nope",
-    type: ScholarshipType.ACADEMIC,
-    value: "Big Value",
-    level: DegreeType.UNIVERSITY,
-    field: "",
-    link: "",
-    requirement: {
-      score: {
-        CPA: 4.0,
-      },
-      competitions: true,
-      experience: true,
-      activities: "Test activities",
-    },
-    description: "Test Description about Scholarship",
-  },
-  {
-    id: "4",
-    name: "Test Corporate Scholarship 4",
-    image: scholarship1,
-    organization: "HUST HUST",
-    location: "Viet Nam",
-    applyLocation: "Huster",
-    ranking: 1,
-    deadline: "nope",
-    type: ScholarshipType.ACADEMIC,
-    value: "Big Value",
-    level: DegreeType.UNIVERSITY,
-    field: "",
-    link: "",
-    requirement: {
-      score: {
-        CPA: 4.0,
-      },
-      competitions: true,
-      experience: true,
-      activities: "Test activities",
-    },
-    description: "Test Description about Scholarship",
-  },
-];
+import ScholarshipServices from "src/services/ScholarshipServices/ScholarshipServices";
+import { GrFormNext, GrFormPrevious } from "react-icons/gr";
+import { useSelector } from "react-redux";
+import NotiEnableRecommend from "src/components/notiEnableRecommend/NotiEnableRecommend";
 
 const HomePage = () => {
   const [scholarshipData, setScholarshipData] = useState<Array<Scholarship>>(
-    sampleSchoolScholarshipData,
+    [],
   );
-  const [scholarshipDataType, setScholarshipDataType] = useState("school");
+  const [showingData, setShowingData] =
+    useState<Array<Scholarship>>(scholarshipData);
+
+  const [recommendData, setRecommendData] = useState<Array<Scholarship>>([]);
+  const [scholarshipDataType, setScholarshipDataType] = useState("scholarship");
+  const [allPage, setAllPage] = useState<Array<number>>([]);
+  const [currentNum, setCurrentNum] = useState(1);
+
+  const isLogin = useSelector((state: any) => state.user.isLogin);
+  const isRecommend = useSelector((state: any) => state.setting.isRecommend);
+
+  const getScholarshipData = async (pageNumber: number) => {
+    const response = await ScholarshipServices.getAllScholarByPage(pageNumber);
+    setScholarshipData(response.data.scholarship);
+    setShowingData(response.data.scholarship);
+
+    let newAllPageNumber = [];
+    for (var i = 1; i <= response.data.total_page; i++) {
+      newAllPageNumber.push(i);
+    }
+    setAllPage(newAllPageNumber);
+    setCurrentNum(pageNumber);
+  };
+
+  useEffect(() => {
+    getScholarshipData(1);
+  }, []);
+
   return (
     <DefaultLayout>
       <div className="flex px-20 justify-between my-10">
@@ -225,9 +58,9 @@ const HomePage = () => {
                 >
                   <path
                     stroke="currentColor"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
                     d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
                   />
                 </svg>
@@ -249,46 +82,84 @@ const HomePage = () => {
           </form>
 
           <div className="mt-4 flex-col">
-            <h2 className="mb-4 text-[25px] font-sans">
-              Prominent scholarship
-            </h2>
-            <div className="flex w-full border-grey-200 border-b-[2px]">
-              <button
-                className={` p-2.5 ${
-                  scholarshipDataType === "school"
-                    ? "border-black border-b-[2px]"
-                    : ""
-                }`}
-                onClick={() => {
-                  setScholarshipData(sampleSchoolScholarshipData);
-                  setScholarshipDataType("school");
-                }}
-              >
-                University scholarship
-              </button>
-              <button
-                className={` p-2.5 ${
-                  scholarshipDataType === "corporate"
-                    ? "border-black border-b-[2px]"
-                    : ""
-                }`}
-                onClick={() => {
-                  setScholarshipData(sampleCorporateScholarshipData);
-                  setScholarshipDataType("corporate");
-                }}
-              >
-                Corporate scholarship
-              </button>
-            </div>
-            <ListScholarship scholarships={scholarshipData}></ListScholarship>
-            <div className="w-full justify-end flex">
-              <button className="flex mt-2 rounded bg-green-400 text-white p-2.5 items-center pointer border-grey-200 hover:bg-green-500">
-                View all !
-              </button>
-            </div>
-          </div>
+            {isLogin && (
+              <div className="flex w-full border-grey-200 border-b-[2px]">
+                <button
+                  className={` p-2.5 ${
+                    scholarshipDataType === "scholarship"
+                      ? "border-black border-b-[2px]"
+                      : ""
+                  }`}
+                  onClick={() => {
+                    setShowingData(scholarshipData);
+                    setScholarshipDataType("scholarship");
+                  }}
+                >
+                  Tất cả học bổng
+                </button>
+                <button
+                  className={` p-2.5 ${
+                    scholarshipDataType === "recommend"
+                      ? "border-black border-b-[2px]"
+                      : ""
+                  }`}
+                  onClick={() => {
+                    setShowingData(recommendData);
+                    setScholarshipDataType("recommend");
+                  }}
+                >
+                  Học bổng gợi ý
+                </button>
+              </div>
+            )}
 
-          <div className="mt-4 flex-col"></div>
+            {(isRecommend || scholarshipDataType === "scholarship") && (
+              <ListScholarship scholarships={showingData}></ListScholarship>
+            )}
+            {!isRecommend && scholarshipDataType === "recommend" && (
+              <div className="flex w-full justify-center mt-8">
+                <NotiEnableRecommend />
+              </div>
+            )}
+            {(isRecommend && scholarshipDataType === "recommend") ||
+              (scholarshipDataType === "scholarship" && (
+                <div className="w-full justify-end flex">
+                  <button
+                    className={`mx-2 ${currentNum === 1 ? "hidden" : ""}`}
+                    onClick={() => {
+                      getScholarshipData(currentNum - 1);
+                    }}
+                  >
+                    <GrFormPrevious />
+                  </button>
+                  {allPage.map((num: number, idx: number) => {
+                    return (
+                      <button
+                        className={`mx-2 ${
+                          currentNum === num
+                            ? "underline underline-offset-1 text-blue-400"
+                            : ""
+                        }`}
+                        key={idx}
+                        onClick={() => getScholarshipData(num)}
+                      >
+                        {num}
+                      </button>
+                    );
+                  })}
+                  <button
+                    className={`mx-2 ${
+                      currentNum === allPage[allPage.length - 1] ? "hidden" : ""
+                    }`}
+                    onClick={() => {
+                      getScholarshipData(currentNum + 1);
+                    }}
+                  >
+                    <GrFormNext />
+                  </button>
+                </div>
+              ))}
+          </div>
         </div>
       </div>
     </DefaultLayout>

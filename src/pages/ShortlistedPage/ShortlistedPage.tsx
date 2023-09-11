@@ -1,91 +1,17 @@
-import { scholarship1 } from "src/assets";
 import DefaultLayout from "src/components/layout/DefaultLayout/DefaultLayout";
 import ProfilePageSideBar from "src/components/userPageSideBar/ProfilePageSideBar";
 import { DegreeType, Scholarship, ScholarshipType } from "src/models";
-import ScholarshipShortlisted from "./components/ScholarshipShortlisted";
 import { useState } from "react";
+import ScholarshipComponent from "src/components/scholarshipComponent/ScholarshipComponent";
 
-const sampleShortlisted: Array<Scholarship> = [
-  {
-    id: "1",
-    name: "Test Scholarship 1",
-    image: scholarship1,
-    organization: "HUST",
-    location: "Viet Nam",
-    applyLocation: "Hust Student",
-    ranking: 1,
-    deadline: "nope",
-    type: ScholarshipType.FULL,
-    value: "Big Value",
-    level: DegreeType.UNIVERSITY,
-    field: "",
-    link: "",
-    requirement: {
-      score: {
-        CPA: 4.0,
-      },
-      competitions: true,
-      experience: true,
-      activities: "Test activities",
-    },
-    description: "Test Description about Scholarship",
-  },
-  {
-    id: "2",
-    name: "Test Scholarship 2",
-    image: scholarship1,
-    organization: "HUST HUST",
-    location: "Viet Nam",
-    applyLocation: "Huster",
-    ranking: 1,
-    deadline: "nope",
-    type: ScholarshipType.ACADEMIC,
-    value: "Big Value",
-    level: DegreeType.UNIVERSITY,
-    field: "",
-    link: "",
-    requirement: {
-      score: {
-        CPA: 4.0,
-      },
-      competitions: true,
-      experience: true,
-      activities: "Test activities",
-    },
-    description: "Test Description about Scholarship",
-  },
-  {
-    id: "3",
-    name: "Test Scholarship 3",
-    image: scholarship1,
-    organization: "HUST HUST",
-    location: "Viet Nam",
-    applyLocation: "Huster",
-    ranking: 1,
-    deadline: "nope",
-    type: ScholarshipType.ACADEMIC,
-    value: "Big Value",
-    level: DegreeType.UNIVERSITY,
-    field: "",
-    link: "",
-    requirement: {
-      score: {
-        CPA: 4.0,
-      },
-      competitions: true,
-      experience: true,
-      activities: "Test activities",
-    },
-    description: "Test Description about Scholarship",
-  },
-];
+const sampleShortlisted: Array<Scholarship> = [];
 
 const ShortlistedPage = () => {
   const [shortlisted, setShortlisted] = useState(sampleShortlisted);
 
   const removeScholarship = (id: string) => {
     const newArr = shortlisted.filter((scholarship: Scholarship) => {
-      if (scholarship.id !== id) return scholarship;
+      if (scholarship._id !== id) return scholarship;
     });
     setShortlisted(newArr);
   };
@@ -107,10 +33,11 @@ const ShortlistedPage = () => {
                   className="my-4 bg-white border-2 border-grey-200 drop-shadow-md shadow-stone-100"
                   key={idx}
                 >
-                  <ScholarshipShortlisted
+                  <ScholarshipComponent
                     data={scholarship}
                     removeScholarship={removeScholarship}
-                  ></ScholarshipShortlisted>
+                    isShorlisted={true}
+                  ></ScholarshipComponent>
                 </div>
               );
             })}
