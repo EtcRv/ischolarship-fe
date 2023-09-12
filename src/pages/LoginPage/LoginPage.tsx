@@ -102,10 +102,7 @@ const LoginPage = () => {
                 ]}
                 name="email"
               >
-                <Input
-                  className="border-x-0 border-t-0 rounded-none text-base p-0 hover:border-x-0 text-[#333] placeholder-[#333]"
-                  placeholder="Email"
-                />
+                <Input className="text-base" placeholder="Email" />
               </Form.Item>
               <Form.Item
                 rules={[
@@ -116,17 +113,14 @@ const LoginPage = () => {
                 ]}
                 name="password"
               >
-                <Input.Password
-                  className="border-x-0 border-t-0 rounded-none text-base p-0 hover:border-x-0 text-[#333] placeholder-[#333]"
-                  placeholder="Password"
-                />
+                <Input.Password className="text-base " placeholder="Password" />
               </Form.Item>
               <div className="my-2 flex justify-center">
                 {error.length > 0 && (
                   <span className="text-red-600">{error}</span>
                 )}
               </div>
-              <div className="flex justify-center mt-8">
+              <div className="flex justify-center mt-6">
                 <button className="rounded-lg  bg-sky-500 px-[20px] py-3 pointer w-full text-white text-base">
                   Login
                 </button>

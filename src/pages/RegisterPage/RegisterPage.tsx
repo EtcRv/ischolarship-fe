@@ -1,11 +1,9 @@
-import { Col, Divider, Form, Input, Row } from "antd";
+import { useState, useCallback } from "react";
+import { Divider, Form, Input } from "antd";
 import { useNavigate } from "react-router-dom";
 import { formItemLayout, REGEX } from "../../utils";
-import { auth } from "../../firebase";
-import { createUserWithEmailAndPassword } from "firebase/auth";
 import AuthenticationLayout from "../../components/layout/AuthenticationLayout/AuthenticationLayout";
 import AuthenticationServices from "src/services/AuthenticationServices/AuthenticationServices";
-import { useState } from "react";
 import SuccessMessage from "src/components/successMessage/SuccessMessage";
 
 const RegisterPage = () => {
@@ -13,14 +11,14 @@ const RegisterPage = () => {
   const navigate = useNavigate();
   const [error, setError] = useState("");
 
+  const wrapperColLogin = useCallback(() => {
+    const data = formItemLayout;
+    data.wrapperCol.xs.span = 24;
+    return data;
+  }, [formItemLayout]);
+
   const onFinish = async (values: any) => {
     try {
-      // await createUserWithEmailAndPassword(
-      //   auth,
-      //   values.email,
-      //   values.password,
-      // );
-
       const res = await AuthenticationServices.register({
         user_name: values.name,
         email: values.email,
@@ -37,17 +35,22 @@ const RegisterPage = () => {
   return (
     <AuthenticationLayout>
       <div className="h-full justify-center items-center flex">
-        <div className="bg-white px-[10px] py-[30px] rounded-lg drop-shadow-md shadow-stone-100 max-w-md">
+        <div className="bg-white px-3 pt-9 rounded-lg drop-shadow-md shadow-stone-100 max-w-md">
           <div style={{ padding: "10px" }}>
-            <Form {...formItemLayout} onFinish={onFinish} form={form}>
+            <div className="mb-8">
+              <p
+                style={{ color: "#333", fontSize: "48px", fontWeight: "bold" }}
+              >
+                Register
+              </p>
+            </div>
+            <Form {...wrapperColLogin} onFinish={onFinish} form={form}>
               <Form.Item
                 rules={[
                   {
                     required: true,
                   },
                 ]}
-                label={"User name"}
-                labelAlign="left"
                 name="name"
               >
                 <Input placeholder="Please input user name" />
@@ -74,8 +77,6 @@ const RegisterPage = () => {
                     required: true,
                   },
                 ]}
-                label={"Email"}
-                labelAlign="left"
                 name="email"
               >
                 <Input placeholder="Please input email" />
@@ -86,8 +87,6 @@ const RegisterPage = () => {
                     required: true,
                   },
                 ]}
-                label={"Password"}
-                labelAlign="left"
                 name="password"
               >
                 <Input.Password placeholder="Please input password" />
@@ -109,8 +108,6 @@ const RegisterPage = () => {
                     },
                   }),
                 ]}
-                label={"Confirm password"}
-                labelAlign="left"
                 name="confirm_password"
               >
                 <Input.Password placeholder="Please input password" />
@@ -121,21 +118,23 @@ const RegisterPage = () => {
                 )}
               </div>
               <div className="flex justify-center">
-                <button className="rounded-lg border-[1px] bg-white px-[20px] py-2 pointer border-grey-200">
+                <button className="rounded-lg  bg-sky-500 px-[20px] py-3 pointer w-full text-white text-base">
                   Register
                 </button>
               </div>
             </Form>
-            <Divider style={{ color: "grey", fontSize: "14px" }}>
-              Already have a IScholarship account?
-            </Divider>
-            <div className="flex justify-center">
-              <button
-                onClick={() => navigate("/login")}
-                className="rounded-lg border-[1px] bg-white px-[20px] py-2 pointer border-grey-200"
-              >
-                Login
-              </button>
+            <div className="flex items-center mt-8">
+              <p style={{ color: "#333", fontSize: "12px" }} className="pe-6">
+                Already have a IScholarship account?
+              </p>
+              <div className="flex justify-center">
+                <button
+                  onClick={() => navigate("/login")}
+                  className="rounded-lg border-[1px] bg-white px-5 py-2 pointer border-grey-200"
+                >
+                  Login
+                </button>
+              </div>
             </div>
           </div>
         </div>

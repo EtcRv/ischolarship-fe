@@ -11,7 +11,7 @@ const AuthenticationLayout = ({ children }: any) => {
       }}
     >
       <div
-        className="modal h-4/5 justify-center items-center "
+        className="modal justify-center items-center "
         onClick={(e) => {
           e.stopPropagation();
         }}
