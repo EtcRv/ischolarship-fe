@@ -25,6 +25,10 @@ const UpdateProfile = (props: any) => {
   const [email, setEmail] = useState(props.email);
   return (
     <div className="flex-col p-6 text-start items-center">
+      <h2 className="ml-[80px] text-xl font-bold">
+        Sửa thông tin cá nhân của bạn
+      </h2>
+
       <div className="flex w-full justify-around">
         <div className="flex-col">
           <div className="flex-col my-6">

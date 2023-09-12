@@ -7,6 +7,7 @@ import "react-datepicker/dist/react-datepicker.css";
 const Profile = (props: any) => {
   return (
     <div className="flex-col p-6 text-start items-center">
+      <h2 className="ml-[80px] text-xl font-bold">Thông tin cá nhân của bạn</h2>
       <div className="flex w-full justify-around">
         <div className="flex-col">
           <div className="flex my-6">

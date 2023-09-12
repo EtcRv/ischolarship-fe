@@ -31,7 +31,40 @@ const ScholarshipDetailPage = () => {
 
   const getScholarshipData = async (id: string) => {
     const res = await ScholarshipServices.getScholarshipInformation(id);
-    setScholarshipDetail(res.data);
+    console.log("res.data: ", res.data);
+    let scholarshipData = res.data;
+    scholarshipData.education_level =
+      getEducationLevelFromData(scholarshipData);
+    scholarshipData.type = getTypeFromData(scholarshipData);
+    setScholarshipDetail(scholarshipData);
+  };
+
+  const getEducationLevelFromData = (data: any) => {
+    let edu_levels = data.education_level.trim().split(",");
+    for (let i = 0; i < edu_levels.length; i++) {
+      if (edu_levels[i] === "1") {
+        edu_levels[i] = "Trung cấp";
+      } else if (edu_levels[i] === "2") {
+        edu_levels[i] = "Cao đẳng";
+      } else if (edu_levels[i] === "3") {
+        edu_levels[i] = "Đại học";
+      } else if (edu_levels[i] === "4") {
+        edu_levels[i] = "Thạc sĩ";
+      } else if (edu_levels[i] === "5") {
+        edu_levels[i] = "Tiến sĩ";
+      }
+    }
+    return edu_levels.join(", ");
+  };
+
+  const getTypeFromData = (data: any) => {
+    if (Number(data.type) === 1) {
+      return "Học bổng hỗ trợ khó khăn";
+    } else if (Number(data.type) === 2) {
+      return "Học bổng đại học/ du học";
+    } else if (Number(data.type) === 3) {
+      return "Học bổng tổ chức/ doanh nghiệp";
+    }
   };
 
   useEffect(() => {

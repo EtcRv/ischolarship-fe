@@ -7,21 +7,62 @@ import { AiOutlineStar } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
 import { IoMdRemove } from "react-icons/io";
 import { scholarship1 } from "src/assets";
+import { useEffect, useState } from "react";
 
 const ScholarshipComponent = (props: any) => {
   const data: Scholarship = props.data;
   const isShorlisted = props.isShorlisted;
   const navigate = useNavigate();
 
+  const [education_level, setEducationLevel] = useState("");
+  const [type, setType] = useState("");
+
+  useEffect(() => {
+    getEducationLevelFromData();
+    getTypeFromData();
+  }, []);
+
+  const getEducationLevelFromData = () => {
+    let edu_levels = data.education_level.trim().split(",");
+    for (let i = 0; i < edu_levels.length; i++) {
+      if (edu_levels[i] === "1") {
+        edu_levels[i] = "Trung cấp";
+      } else if (edu_levels[i] === "2") {
+        edu_levels[i] = "Cao đẳng";
+      } else if (edu_levels[i] === "3") {
+        edu_levels[i] = "Đại học";
+      } else if (edu_levels[i] === "4") {
+        edu_levels[i] = "Thạc sĩ";
+      } else if (edu_levels[i] === "5") {
+        edu_levels[i] = "Tiến sĩ";
+      }
+    }
+    setEducationLevel(edu_levels.join(", "));
+  };
+
+  const getTypeFromData = () => {
+    if (Number(data.type) === 1) {
+      setType("Học bổng hỗ trợ khó khăn");
+    } else if (Number(data.type) === 2) {
+      setType("Học bổng đại học/ du học");
+    } else if (Number(data.type) === 3) {
+      setType("Học bổng tổ chức/ doanh nghiệp");
+    }
+  };
+
   const checkTime = () => {
-    let time = data.deadline.trim().split("/");
-    const month = time[1];
-    time[1] = time[0];
-    time[0] = month;
-    const newTime = time.join(" ");
-    if (newTime.length > 10) return false;
-    if (Date.now() - Date.parse(newTime) > 0) return true;
-    return false;
+    let dl = data.deadline;
+    let time = dl.trim().split("/");
+    const timeDeadline = new Date(
+      Number(time[2]),
+      Number(time[1]) - 1,
+      Number(time[0]),
+    );
+
+    var currentDate = new Date();
+
+    if (currentDate > timeDeadline) return false;
+    return true;
   };
 
   return (
@@ -39,10 +80,10 @@ const ScholarshipComponent = (props: any) => {
             <div className="flex my-[3px]">
               <span className="flex w-1/2">
                 <FaGraduationCap className="mx-2 my-auto" />
-                {data.education_level}
+                {education_level}
               </span>
               <span className="flex w-1/2">
-                <BsFlag className="mx-2 my-auto" /> {data.type}
+                <BsFlag className="mx-2 my-auto" /> {type}
               </span>
             </div>
             <span className="flex my-[3px]">
