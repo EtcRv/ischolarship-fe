@@ -8,6 +8,7 @@ import ScholarshipServices from "src/services/ScholarshipServices/ScholarshipSer
 import { GrFormNext, GrFormPrevious } from "react-icons/gr";
 import { useSelector } from "react-redux";
 import NotiEnableRecommend from "src/components/notiEnableRecommend/NotiEnableRecommend";
+import { Outlet } from "react-router-dom";
 
 const HomePage = () => {
   const [scholarshipData, setScholarshipData] = useState<Array<Scholarship>>(
@@ -162,6 +163,7 @@ const HomePage = () => {
           </div>
         </div>
       </div>
+      <Outlet />
     </DefaultLayout>
   );
 };
