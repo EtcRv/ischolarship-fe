@@ -35,18 +35,19 @@ const LoginPage = () => {
       dispatch(addToken({ token: res.data.access_token }));
 
       const response = await UserServices.getUserInfo(res.data.access_token);
-
+      console.log("response: ", response);
       dispatch(updateLoginStatus());
       dispatch(
         updateUser({
           user: {
             user_name: response.data.user_name,
-            // user_id: 1,
-            // gender: "Male",
-            // dob: new Date("2023-05-08"),
-            // nationality: "Vietnam",
-            // location: "Vietnam",
-            // phone: "123456",
+            gender: response.data.sex || "Not-Set",
+            dob: response.data.date_of_birth
+              ? new Date(response.data.date_of_birth)
+              : new Date(),
+            nationality: response.data.nationality || "Not-Set",
+            phone: response.data.phone || "Not-Set",
+            education_level: response.data.education_level || "Not-Set",
             email: response.data.email,
             // email: "dungbacninh12@gmail.com",
           },
