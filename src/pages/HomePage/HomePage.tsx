@@ -29,13 +29,12 @@ const HomePage = () => {
   const isRecommend = useSelector((state: any) => state.setting.isRecommend);
 
   const [searchParams] = useSearchParams();
-  console.log(searchParams.size);
 
   const getAllScholarshipData = async () => {
     const response = await ScholarshipServices.getAllScholar();
     setScholarshipDataAll(response.data.scholarship);
   };
-
+  console.log(showingData);
   const getScholarshipData = async (pageNumber: number) => {
     const response = await ScholarshipServices.getAllScholarByPage(pageNumber);
     setScholarshipData(response.data.scholarship);

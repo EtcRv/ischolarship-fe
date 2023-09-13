@@ -8,22 +8,30 @@ const FilterComponent = ({ setShowingData, scholarshipDataAll }: any) => {
 
   const [searchParams, setSearchParams] = useSearchParams();
   const [type, setType] = useState(searchParams.get("type") || "");
-  console.log(type);
   const [educationLevel, setEducationLevel] = useState("");
-  const FilterData = (key: string, value: any) => {
-    // console.log(scholarshipDataAll[0][key]);
-    return scholarshipDataAll?.filter((element: any) => {
-      return element[key] == value;
+  const FilterData = (arrayFilter: any) => {
+    let data = scholarshipDataAll;
+    arrayFilter.forEach((filter: any) => {
+      const test = data.filter((element: any) => {
+        return element[filter.key] == filter.value;
+      });
+      data = test;
     });
+    return data;
   };
   const handleFilter = () => {
     setSearchParams((searchParams) => {
+      const arrayFilter = [];
       if (type) {
         searchParams.set("type", type);
-        const showData = FilterData("type", type);
-        setShowingData(showData);
+        arrayFilter.push({ key: "type", value: type });
+        // showData = FilterData("type", type);
       }
-      if (educationLevel) searchParams.set("education_level", educationLevel);
+      if (educationLevel) {
+        searchParams.set("education_level", educationLevel);
+        arrayFilter.push({ key: "education_level", value: educationLevel });
+      }
+      setShowingData(FilterData(arrayFilter));
       return searchParams;
     });
   };
