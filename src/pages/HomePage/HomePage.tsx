@@ -8,12 +8,15 @@ import ScholarshipServices from "src/services/ScholarshipServices/ScholarshipSer
 import { GrFormNext, GrFormPrevious } from "react-icons/gr";
 import { useSelector } from "react-redux";
 import NotiEnableRecommend from "src/components/notiEnableRecommend/NotiEnableRecommend";
-import { Outlet } from "react-router-dom";
+import { Outlet, useSearchParams } from "react-router-dom";
 
 const HomePage = () => {
   const [scholarshipData, setScholarshipData] = useState<Array<Scholarship>>(
     [],
   );
+  const [scholarshipDataAll, setScholarshipDataAll] = useState<
+    Array<Scholarship>
+  >([]);
   const [showingData, setShowingData] =
     useState<Array<Scholarship>>(scholarshipData);
 
@@ -24,6 +27,14 @@ const HomePage = () => {
 
   const isLogin = useSelector((state: any) => state.user.isLogin);
   const isRecommend = useSelector((state: any) => state.setting.isRecommend);
+
+  const [searchParams] = useSearchParams();
+  console.log(searchParams.size);
+
+  const getAllScholarshipData = async () => {
+    const response = await ScholarshipServices.getAllScholar();
+    setScholarshipDataAll(response.data.scholarship);
+  };
 
   const getScholarshipData = async (pageNumber: number) => {
     const response = await ScholarshipServices.getAllScholarByPage(pageNumber);
@@ -40,12 +51,16 @@ const HomePage = () => {
 
   useEffect(() => {
     getScholarshipData(1);
+    getAllScholarshipData();
   }, []);
 
   return (
     <DefaultLayout>
       <div className="flex px-20 justify-between my-10">
-        <FilterComponent />
+        <FilterComponent
+          setShowingData={setShowingData}
+          scholarshipDataAll={scholarshipDataAll}
+        />
         <div className="w-4/5 h-full py-4 px-6 ">
           <form>
             <div className="relative">
@@ -123,43 +138,46 @@ const HomePage = () => {
               </div>
             )}
             {(isRecommend && scholarshipDataType === "recommend") ||
-              (scholarshipDataType === "scholarship" && (
-                <div className="w-full justify-end flex">
-                  <button
-                    className={`mx-2 ${currentNum === 1 ? "hidden" : ""}`}
-                    onClick={() => {
-                      getScholarshipData(currentNum - 1);
-                    }}
-                  >
-                    <GrFormPrevious />
-                  </button>
-                  {allPage.map((num: number, idx: number) => {
-                    return (
-                      <button
-                        className={`mx-2 ${
-                          currentNum === num
-                            ? "underline underline-offset-1 text-blue-400"
-                            : ""
-                        }`}
-                        key={idx}
-                        onClick={() => getScholarshipData(num)}
-                      >
-                        {num}
-                      </button>
-                    );
-                  })}
-                  <button
-                    className={`mx-2 ${
-                      currentNum === allPage[allPage.length - 1] ? "hidden" : ""
-                    }`}
-                    onClick={() => {
-                      getScholarshipData(currentNum + 1);
-                    }}
-                  >
-                    <GrFormNext />
-                  </button>
-                </div>
-              ))}
+              (scholarshipDataType === "scholarship" &&
+                searchParams.size === 0 && (
+                  <div className="w-full justify-end flex">
+                    <button
+                      className={`mx-2 ${currentNum === 1 ? "hidden" : ""}`}
+                      onClick={() => {
+                        getScholarshipData(currentNum - 1);
+                      }}
+                    >
+                      <GrFormPrevious />
+                    </button>
+                    {allPage.map((num: number, idx: number) => {
+                      return (
+                        <button
+                          className={`mx-2 ${
+                            currentNum === num
+                              ? "underline underline-offset-1 text-blue-400"
+                              : ""
+                          }`}
+                          key={idx}
+                          onClick={() => getScholarshipData(num)}
+                        >
+                          {num}
+                        </button>
+                      );
+                    })}
+                    <button
+                      className={`mx-2 ${
+                        currentNum === allPage[allPage.length - 1]
+                          ? "hidden"
+                          : ""
+                      }`}
+                      onClick={() => {
+                        getScholarshipData(currentNum + 1);
+                      }}
+                    >
+                      <GrFormNext />
+                    </button>
+                  </div>
+                ))}
           </div>
         </div>
       </div>
