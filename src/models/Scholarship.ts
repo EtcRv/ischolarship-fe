@@ -13,6 +13,7 @@ export type Scholarship = {
     majors: string;
     link: string;
     requirements: string;
+    html_file: string;
     // description: string;
 }
 

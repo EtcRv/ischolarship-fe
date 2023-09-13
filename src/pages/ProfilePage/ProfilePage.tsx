@@ -10,6 +10,7 @@ import Archievement from "./components/Archievement";
 import AchievementServices from "src/services/AchievementServices/AchievementServices";
 import { IoAddCircleOutline } from "react-icons/io5";
 import ArchievementForm from "./components/ArchievementForm";
+import UserServices from "src/services/UserServices/UserServices";
 
 type Archievement = {
   id: string;
@@ -20,14 +21,13 @@ type Archievement = {
 
 const ProfilePage = () => {
   const userInfor = useSelector((state: any) => state.user.user);
-
-  const [gender, setGender] = useState(userInfor.gender);
-  const [dob, setDob] = useState(new Date(userInfor.dob));
-  // const [dob, setDob] = useState(userInfor.dob);
-  const [nationality, setNationality] = useState(userInfor.nationality);
-  const [location, setLocation] = useState(userInfor.location);
-  const [phone, setPhone] = useState(userInfor.phone);
-  const [email, setEmail] = useState("dungbacninh12@gmail.com");
+  const token = useSelector((state: any) => state.user.token);
+  // const [gender, setGender] = useState(userInfor.gender);
+  // const [dob, setDob] = useState(new Date(userInfor.dob));
+  // const [nationality, setNationality] = useState(userInfor.nationality);
+  // const [location, setLocation] = useState(userInfor.location);
+  // const [phone, setPhone] = useState(userInfor.phone);
+  const [email, setEmail] = useState(userInfor.email);
   const [pageStatus, setPageStatus] = useState("profile");
   const [allArchievement, setAllArchievement] = useState<Array<Archievement>>(
     [],
@@ -46,17 +46,26 @@ const ProfilePage = () => {
 
   const getArchivementData = async () => {
     try {
-      const response = await AchievementServices.getAllAchievement(
-        userInfor.user_id,
-      );
+      const response = await AchievementServices.getAllAchievement(token);
+      console.log("response: ", response);
       setAllArchievement(response.data.data);
     } catch (err) {
       console.log("error: ", err);
     }
   };
 
+  // const getUserProfile = async () => {
+  //   try {
+  //     const response = await UserServices.getUserInfo(token);
+  //     console.log("response: ", response);
+  //   } catch (err) {
+  //     console.log("err: ", err);
+  //   }
+  // };
+
   useEffect(() => {
     getArchivementData();
+    // getUserProfile();
   }, []);
 
   return (
@@ -75,16 +84,16 @@ const ProfilePage = () => {
           <div className="my-4">
             {pageStatus === "profile" && (
               <Profile
-                gender={gender}
-                dob={dob}
-                nationality={nationality}
-                location={location}
-                phone={phone}
+                // gender={gender}
+                // dob={dob}
+                // nationality={nationality}
+                // location={location}
+                // phone={phone}
                 email={email}
                 changePageStatus={setPageStatus}
               ></Profile>
             )}
-            {pageStatus === "profile-edit" && (
+            {/* {pageStatus === "profile-edit" && (
               <UpdateProfile
                 gender={gender}
                 dob={dob}
@@ -100,7 +109,7 @@ const ProfilePage = () => {
                 updatePhone={setPhone}
                 updateEmail={setEmail}
               />
-            )}
+            )} */}
           </div>
           <div className="mt-[20px] flex-col text-start my-8">
             <div className="mx-[80px] flex justify-between">

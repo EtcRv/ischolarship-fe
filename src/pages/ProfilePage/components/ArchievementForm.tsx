@@ -4,6 +4,7 @@ import AchievementServices from "src/services/AchievementServices/AchievementSer
 
 const ArchievementForm = (props: any) => {
   const userId = useSelector((state: any) => state.user.user.user_id);
+  const token = useSelector((state: any) => state.user.token);
   const [title, setTitle] = useState(props.data.title);
   const [role, setRole] = useState(props.data.role);
   const [description, setDescription] = useState(props.data.description);
@@ -65,15 +66,16 @@ const ArchievementForm = (props: any) => {
               props.changeTitle("");
               props.changeRole("");
               props.changeDescription("");
-              // try {
-              //   const res = await AchievementServices.createAchievement(
-              //     userId,
-              //     { title: title, role: role, description: description },
-              //   );
-              //   console.log("res: ", res);
-              // } catch (err) {
-              //   console.log("err: ", err);
-              // }
+              try {
+                const res = await AchievementServices.createAchievement(token, {
+                  title: title,
+                  role: role,
+                  description: description,
+                });
+                console.log("res: ", res);
+              } catch (err) {
+                console.log("err: ", err);
+              }
               const minNum = 100000000;
               const maxNum = 999999999;
               props.changeAllArchievement({

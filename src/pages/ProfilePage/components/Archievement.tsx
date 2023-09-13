@@ -3,6 +3,7 @@ import { AiOutlineEdit } from "react-icons/ai";
 import { BsTrash } from "react-icons/bs";
 import ArchievementForm from "./ArchievementForm";
 import { useSelector } from "react-redux";
+import AchievementServices from "src/services/AchievementServices/AchievementServices";
 
 const Archievement = (props: any) => {
   const userId = useSelector((state: any) => state.user.user.id);
@@ -20,7 +21,12 @@ const Archievement = (props: any) => {
               <button className="mx-2" onClick={() => setIsEdit(true)}>
                 <AiOutlineEdit className="text-red-600 text-xl" />
               </button>
-              <button className="mx-2">
+              <button
+                className="mx-2"
+                onClick={async () => {
+                  // const res = await AchievementServices.deleteAchievement(token, )
+                }}
+              >
                 <BsTrash className="text-gray-600 text-xl" />
               </button>
             </div>

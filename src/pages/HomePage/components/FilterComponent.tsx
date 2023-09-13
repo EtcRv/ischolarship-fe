@@ -8,7 +8,6 @@ const FilterComponent = ({ setShowingData, scholarshipDataAll }: any) => {
 
   const [searchParams, setSearchParams] = useSearchParams();
   const [type, setType] = useState(searchParams.get("type") || "");
-  console.log(type);
   const [educationLevel, setEducationLevel] = useState("");
   const FilterData = (key: string, value: any) => {
     // console.log(scholarshipDataAll[0][key]);

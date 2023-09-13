@@ -10,7 +10,30 @@ import { scholarship1 } from "src/assets";
 import { useEffect, useState } from "react";
 import ScholarshipUserServices from "src/services/ScholarshipUserServices/ScholarshipUserServices";
 
-const ScholarshipComponent = (props: any) => {
+const allStatus = [
+  {
+    name: "Shortlist",
+    value: 1,
+  },
+  {
+    name: "Applied",
+    value: 2,
+  },
+  {
+    name: "Received",
+    value: 3,
+  },
+  {
+    name: "Denied",
+    value: 4,
+  },
+  {
+    name: "Disinterested",
+    value: 5,
+  },
+];
+
+const ScholarshipInShortlisted = (props: any) => {
   const data: Scholarship = props.data;
   const [isShorlisted, setIsShorlisted] = useState(props.isShorlisted);
   const navigate = useNavigate();
@@ -108,33 +131,62 @@ const ScholarshipComponent = (props: any) => {
         )}
       </div>
       <div className="flex w-full justify-between">
-        {!isShorlisted && (
-          <button
-            className="flex mt-2 rounded bg-orange-400 text-white p-2 items-center pointer border-grey-200 hover:bg-orange-500"
-            onClick={async () => {
-              const res = await ScholarshipUserServices.addToShortlist(
-                props.token,
-                data._id,
-                { label: 1, status: 1 },
-              );
-              console.log("res: ", res);
-              setIsShorlisted(true);
-            }}
-          >
-            <AiOutlineStar className="mr-2" />
-            Thêm vào Shortlisted
-          </button>
-        )}
+        <select
+          id="scholarshipstatus"
+          className="flex mt-2 rounded bg-white text-gray-400 p-2 items-center pointer border-[1px] border-gray-400 hover:border-black hover:text-black"
+          value={isShorlisted}
+          onChange={async (e) => {
+            const statusValue = e.currentTarget.value;
+            setIsShorlisted(Number(statusValue));
+            if (Number(statusValue) === 5) {
+              const deleteRes =
+                await ScholarshipUserServices.deleteFromShortlist(
+                  props.token,
+                  data._id,
+                );
+              const discardRes =
+                await ScholarshipUserServices.discardFromShortlist(
+                  props.token,
+                  data._id,
+                  {
+                    label: 0,
+                    status: 5,
+                  },
+                );
+              props.removeScholarship(data._id);
+            } else {
+              const updateRes =
+                await ScholarshipUserServices.updateScholarshipInShortlist(
+                  props.token,
+                  data._id,
+                  {
+                    label: 1,
+                    status: Number(statusValue),
+                  },
+                );
+            }
+          }}
+        >
+          {allStatus.map((status: any, idx: number) => (
+            <option
+              value={status.value}
+              key={idx}
+              selected={isShorlisted === status.value}
+            >
+              {status.name}
+            </option>
+          ))}
+        </select>
 
-        {isShorlisted && (
+        {/* {isShorlisted && (
           <button
             className="flex mt-2 rounded bg-white text-gray-400 p-2 items-center pointer border-[1px] border-gray-400 hover:border-black hover:text-black"
-            onClick={() => navigate("/shortlisted")}
+            onClick={() => props.removeScholarship(data._id)}
           >
-            {/* <IoMdRemove className="mr-2" /> */}
-            Chuyển tới Shortlisted
+            <IoMdRemove className="mr-2" />
+            Unshortlisted
           </button>
-        )}
+        )} */}
         <button
           className="flex mt-2 rounded bg-green-400 text-white p-2.5 items-center pointer border-grey-200 hover:bg-green-500"
           onClick={() => navigate(`/scholarship/${data._id}`)}
@@ -147,4 +199,4 @@ const ScholarshipComponent = (props: any) => {
   );
 };
 
-export default ScholarshipComponent;
+export default ScholarshipInShortlisted;

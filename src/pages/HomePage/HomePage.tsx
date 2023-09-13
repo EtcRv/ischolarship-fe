@@ -9,6 +9,7 @@ import { GrFormNext, GrFormPrevious } from "react-icons/gr";
 import { useSelector } from "react-redux";
 import NotiEnableRecommend from "src/components/notiEnableRecommend/NotiEnableRecommend";
 import { Outlet, useSearchParams } from "react-router-dom";
+import ScholarshipUserServices from "src/services/ScholarshipUserServices/ScholarshipUserServices";
 
 const HomePage = () => {
   const [scholarshipData, setScholarshipData] = useState<Array<Scholarship>>(
@@ -29,7 +30,10 @@ const HomePage = () => {
   const isRecommend = useSelector((state: any) => state.setting.isRecommend);
 
   const [searchParams] = useSearchParams();
-  console.log(searchParams.size);
+  const [token, setToken] = useState(
+    useSelector((state: any) => state.user.token) || "",
+  );
+  const [shortlisted, setShortlisted] = useState([]);
 
   const getAllScholarshipData = async () => {
     const response = await ScholarshipServices.getAllScholar();
@@ -49,9 +53,17 @@ const HomePage = () => {
     setCurrentNum(pageNumber);
   };
 
+  const getShortlistedData = async () => {
+    const res = await ScholarshipUserServices.getAllShortlist(token);
+    setShortlisted(res.data);
+  };
+
   useEffect(() => {
     getScholarshipData(1);
     getAllScholarshipData();
+    if (isLogin) {
+      getShortlistedData();
+    }
   }, []);
 
   return (
@@ -130,7 +142,10 @@ const HomePage = () => {
             )}
 
             {(isRecommend || scholarshipDataType === "scholarship") && (
-              <ListScholarship scholarships={showingData}></ListScholarship>
+              <ListScholarship
+                scholarships={showingData}
+                shortlisted={shortlisted}
+              ></ListScholarship>
             )}
             {!isRecommend && scholarshipDataType === "recommend" && (
               <div className="flex w-full justify-center mt-8">

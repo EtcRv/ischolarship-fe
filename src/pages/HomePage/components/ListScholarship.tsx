@@ -1,10 +1,22 @@
 import { Scholarship } from "src/models";
 import ScholarshipComponent from "src/components/scholarshipComponent/ScholarshipComponent";
+import { useSelector } from "react-redux";
+import { useState } from "react";
 
 const ListScholarship = (props: any) => {
+  const token = useSelector((state: any) => state.user.token);
+
+  const shortlisted =
+    props.shortlisted.length > 0
+      ? props.shortlisted.map((ele: any, idx: number) => ele.data)
+      : [];
+
+  console.log("shortlisted: ", shortlisted);
+
   return (
     <div className="">
       {props.scholarships.map((scholarship: Scholarship, idx: any) => {
+        console.log(idx, ": ", scholarship);
         return (
           <div
             className="my-4 bg-white border-2 border-grey-200 drop-shadow-md shadow-stone-100"
@@ -12,8 +24,11 @@ const ListScholarship = (props: any) => {
           >
             <ScholarshipComponent
               data={scholarship}
-              isShorlisted={false}
+              isShorlisted={shortlisted.some(
+                (item: any) => item._id == scholarship._id,
+              )}
               removeScholarship={(id: string) => {}}
+              token={token}
             ></ScholarshipComponent>
           </div>
         );

@@ -6,11 +6,12 @@ import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import AuthenticationLayout from "src/components/layout/AuthenticationLayout/AuthenticationLayout";
 import { FcGoogle } from "react-icons/fc";
 import { useDispatch } from "react-redux";
-import { updateLoginStatus, updateUser } from "src/store/userSlice";
+import { addToken, updateLoginStatus, updateUser } from "src/store/userSlice";
 import { useCallback, useState } from "react";
 import AuthenticationServices from "src/services/AuthenticationServices/AuthenticationServices";
 import SuccessMessage from "src/components/successMessage/SuccessMessage";
 import "./LoginPage.css";
+import UserServices from "src/services/UserServices/UserServices";
 const LoginPage = () => {
   const [form] = Form.useForm();
   const navigate = useNavigate();
@@ -25,28 +26,32 @@ const LoginPage = () => {
 
   const onFinish = async (values: any) => {
     try {
-      console.log(values.email, values.password);
       const res = await AuthenticationServices.login({
         email: values.email,
         password: values.password,
       });
 
+      console.log("res: ", res);
+      dispatch(addToken({ token: res.data.access_token }));
+
+      const response = await UserServices.getUserInfo(res.data.access_token);
+
       dispatch(updateLoginStatus());
       dispatch(
         updateUser({
           user: {
-            user_id: res.data.user.id,
-            user_name: res.data.user.user_name,
-            gender: "Male",
-            dob: new Date("2023-05-08"),
-            nationality: "Vietnam",
-            location: "Vietnam",
-            phone: "123456",
-            email: res.data.user.email,
+            user_name: response.data.user_name,
+            // user_id: 1,
+            // gender: "Male",
+            // dob: new Date("2023-05-08"),
+            // nationality: "Vietnam",
+            // location: "Vietnam",
+            // phone: "123456",
+            email: response.data.email,
+            // email: "dungbacninh12@gmail.com",
           },
         }),
       );
-      console.log("res: ", res);
       SuccessMessage("Success", "Login successfull");
       navigate("/");
     } catch (err: any) {

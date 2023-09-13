@@ -1,12 +1,20 @@
 import API from "../Api";
 
 const AchievementServices = {
-    createAchievement(userId: string, data: any) {
-        return API().post('/api/create_achievement', {user_id: userId, achievement: data})
+    createAchievement(token: string, data: any) {
+        const headers = { authorization: `${token}` };
+        return API().post('/api/create_achievement', {achievement: data}, {headers})
     },
-    getAllAchievement(userId: string) {
-        return API().get(`/api/get_all_achievement/${userId}`)
+    getAllAchievement(token: string) {
+        const headers = { authorization: token};
+        return API().get(`/api/get_all_achievement`, {headers})
     },
+    deleteAchievement(token: string, achievement_id: string) {
+        const headers = { authorization: token};
+
+        return API().delete('/api/delete_achievement',{headers} )
+    }
+
     
 }
 

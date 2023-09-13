@@ -17,6 +17,7 @@ const emptyScholarshipDetail: Scholarship = {
   link: "",
   requirements: "",
   "benefits/value": "",
+  html_file: "",
 };
 
 const ScholarshipDetailPage = () => {
@@ -121,6 +122,10 @@ const ScholarshipDetailPage = () => {
           {/* <div className="whitespace-pre-line text-start px-10">
             {dummyScholarshipDetail.description}
           </div> */}
+          <div
+            className="whitespace-pre-line text-start px-10"
+            dangerouslySetInnerHTML={{ __html: scholarshipDetail.html_file }}
+          ></div>
         </div>
       </div>
     </DefaultLayout>
