@@ -2,12 +2,14 @@ import { BsGenderAmbiguous, BsFlag, BsPhone } from "react-icons/bs";
 import { MdCalendarToday } from "react-icons/md";
 import { CiLocationOn } from "react-icons/ci";
 import { AiOutlineMail } from "react-icons/ai";
+import { FaGraduationCap } from "react-icons/fa";
 import { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { CountryDropdown } from "react-country-region-selector";
 import { useDispatch } from "react-redux";
 import { updateUser } from "src/store/userSlice";
+import UserServices from "src/services/UserServices/UserServices";
 
 enum Gender {
   Male = "Male",
@@ -20,7 +22,7 @@ const UpdateProfile = (props: any) => {
   const [gender, setGender] = useState(props.gender);
   const [dob, setDob] = useState(props.dob);
   const [nationality, setNationality] = useState(props.nationality);
-  const [location, setLocation] = useState(props.location);
+  const [education_level, setEducationLevel] = useState(props.education_level);
   const [phone, setPhone] = useState(props.phone);
   const [email, setEmail] = useState(props.email);
   return (
@@ -118,21 +120,20 @@ const UpdateProfile = (props: any) => {
           </div>
         </div>
         <div className="flex-col">
-          <div className="flex-col my-6">
-            <div className="flex">
-              <CiLocationOn className="my-auto mx-2" />
-              <span className="font-bold">Current location: </span>
-            </div>
-            <div className="font-normal mx-2">
-              <CountryDropdown
-                value={location}
-                onChange={(val) => {
-                  setLocation(val);
-                  console.log("val: ", val);
-                }}
+          <div className="flex my-6">
+            <FaGraduationCap className="my-auto mx-2" />
+            <span className="font-bold">
+              Education Level:{" "}
+              <input
+                type="text"
+                value={education_level}
+                placeholder="Your phone number"
+                className="font-normal"
+                onChange={(e) => setEducationLevel(e.currentTarget.value)}
               />
-            </div>
+            </span>
           </div>
+
           <div className="flex my-6">
             <BsPhone className="my-auto mx-2" />
             <span className="font-bold">
@@ -162,7 +163,7 @@ const UpdateProfile = (props: any) => {
             setGender(props.gender);
             setDob(props.dob);
             setNationality(props.nationality);
-            setLocation(props.location);
+            setEducationLevel(props.education_level);
             setPhone(props.phone);
             setEmail(props.email);
             props.changePageStatus("profile");
@@ -172,11 +173,11 @@ const UpdateProfile = (props: any) => {
         </button>
         <button
           className="w-20 mx-2 rounded bg-green-400 text-white p-2.5 items-center pointer border-[1px]  border-grey-200 hover:bg-green-500"
-          onClick={() => {
+          onClick={async () => {
             props.updateGender(gender);
             props.updateDob(dob);
             props.updateNationality(nationality);
-            props.updateLocation(location);
+            props.updateLevel(education_level);
             props.updatePhone(phone);
             props.updateEmail(email);
             dispatch(
@@ -185,12 +186,19 @@ const UpdateProfile = (props: any) => {
                   gender,
                   dob,
                   nationality,
-                  location,
+                  education_level,
                   phone,
                   email,
                 },
               }),
             );
+            const res = await UserServices.updateUserInfo(props.token, {
+              education_level: education_level,
+              nationality: nationality,
+              sex: gender,
+              date_of_birth: dob,
+              phone: phone,
+            });
             props.changePageStatus("profile");
           }}
         >

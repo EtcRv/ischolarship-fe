@@ -3,7 +3,11 @@ import API from "../Api";
 const AchievementServices = {
   createAchievement(token: string, data: any) {
     const headers = { authorization: `${token}` };
-    return API().post("/api/create_achievement", { ...data }, { headers });
+    return API().post(
+      "/api/create_achievement",
+      { achievement: data },
+      { headers },
+    );
   },
   getAllAchievement(token: string) {
     const headers = { authorization: token };

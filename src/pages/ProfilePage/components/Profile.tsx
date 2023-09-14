@@ -2,6 +2,7 @@ import { BsGenderAmbiguous, BsFlag, BsPhone } from "react-icons/bs";
 import { MdCalendarToday } from "react-icons/md";
 import { CiLocationOn } from "react-icons/ci";
 import { AiOutlineMail } from "react-icons/ai";
+import { FaGraduationCap } from "react-icons/fa";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 const Profile = (props: any) => {
@@ -9,7 +10,7 @@ const Profile = (props: any) => {
     <div className="flex-col p-6 text-start items-center">
       <h2 className="ml-[80px] text-xl font-bold">Thông tin cá nhân của bạn</h2>
       <div className="flex w-full justify-around">
-        {/* <div className="flex-col">
+        <div className="flex-col">
           <div className="flex my-6">
             <BsGenderAmbiguous className="my-auto mx-2" />
             <span className="font-bold">
@@ -35,13 +36,13 @@ const Profile = (props: any) => {
               <span className="font-normal mx-2">{props.nationality}</span>{" "}
             </span>
           </div>
-        </div> */}
+        </div>
         <div className="flex-col">
-          {/* <div className="flex my-6">
-            <CiLocationOn className="my-auto mx-2" />
+          <div className="flex my-6">
+            <FaGraduationCap className="my-auto mx-2" />
             <span className="font-bold">
-              Current location:
-              <span className="font-normal mx-2">{props.location}</span>
+              Education Level:
+              <span className="font-normal mx-2">{props.education_level}</span>
             </span>
           </div>
           <div className="flex my-6">
@@ -50,7 +51,7 @@ const Profile = (props: any) => {
               Contact number:{" "}
               <span className="font-normal mx-2">{props.phone}</span>
             </span>
-          </div> */}
+          </div>
           <div className="flex my-6">
             <AiOutlineMail className="my-auto mx-2" />
             <span className="font-bold">
@@ -59,14 +60,14 @@ const Profile = (props: any) => {
           </div>
         </div>
       </div>
-      {/* <div className="flex justify-end my-2">
+      <div className="flex justify-end my-2">
         <button
           className=" w-20 mx-2 rounded bg-green-400 text-white p-2.5 items-center pointer border-[1px]  border-grey-200 hover:bg-green-500"
           onClick={() => props.changePageStatus("profile-edit")}
         >
           Edit
         </button>
-      </div> */}
+      </div>
     </div>
   );
 };
