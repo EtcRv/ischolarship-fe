@@ -9,9 +9,11 @@ import { IoMdRemove } from "react-icons/io";
 import { scholarship1 } from "src/assets";
 import { useEffect, useState } from "react";
 import ScholarshipUserServices from "src/services/ScholarshipUserServices/ScholarshipUserServices";
+import { useSelector } from "react-redux";
 
 const ScholarshipComponent = (props: any) => {
   const data: Scholarship = props.data;
+  const isLogin = useSelector((state: any) => state.user.isLogin);
   const [isShorlisted, setIsShorlisted] = useState(props.isShorlisted);
   const navigate = useNavigate();
 
@@ -112,13 +114,16 @@ const ScholarshipComponent = (props: any) => {
           <button
             className="flex mt-2 rounded bg-orange-400 text-white p-2 items-center pointer border-grey-200 hover:bg-orange-500"
             onClick={async () => {
-              const res = await ScholarshipUserServices.addToShortlist(
-                props.token,
-                data._id,
-                { label: 1, status: 1 },
-              );
-              console.log("res: ", res);
-              setIsShorlisted(true);
+              if (isLogin) {
+                const res = await ScholarshipUserServices.addToShortlist(
+                  props.token,
+                  data._id,
+                  { label: 1, status: 1 },
+                );
+                setIsShorlisted(true);
+              } else {
+                navigate("/login");
+              }
             }}
           >
             <AiOutlineStar className="mr-2" />

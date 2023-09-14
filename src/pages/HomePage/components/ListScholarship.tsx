@@ -11,12 +11,9 @@ const ListScholarship = (props: any) => {
       ? props.shortlisted.map((ele: any, idx: number) => ele.data)
       : [];
 
-  console.log("shortlisted: ", shortlisted);
-
   return (
     <div className="">
       {props.scholarships.map((scholarship: Scholarship, idx: any) => {
-        console.log(idx, ": ", scholarship);
         return (
           <div
             className="my-4 bg-white border-2 border-grey-200 drop-shadow-md shadow-stone-100"

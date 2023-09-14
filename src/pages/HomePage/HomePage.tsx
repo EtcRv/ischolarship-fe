@@ -11,6 +11,7 @@ import NotiEnableRecommend from "src/components/notiEnableRecommend/NotiEnableRe
 import { Outlet, useSearchParams } from "react-router-dom";
 import ScholarshipUserServices from "src/services/ScholarshipUserServices/ScholarshipUserServices";
 import BtnSearch from "./components/BtnSearch";
+import { Spin } from "antd";
 
 const HomePage = () => {
   const [scholarshipData, setScholarshipData] = useState<Array<Scholarship>>(
@@ -108,6 +109,12 @@ const HomePage = () => {
                 >
                   Học bổng gợi ý
                 </button>
+              </div>
+            )}
+
+            {scholarshipData.length === 0 && (
+              <div className="flex justify-center my-8">
+                <Spin tip="Loading" size="large" />
               </div>
             )}
 
