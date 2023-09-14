@@ -66,12 +66,16 @@ const ArchievementForm = (props: any) => {
               props.changeTitle("");
               props.changeRole("");
               props.changeDescription("");
+              const data = {
+                title,
+                role,
+                description,
+              };
               try {
-                const res = await AchievementServices.createAchievement(token, {
-                  title: title,
-                  role: role,
-                  description: description,
-                });
+                const res = await AchievementServices.createAchievement(
+                  token,
+                  data,
+                );
                 console.log("res: ", res);
               } catch (err) {
                 console.log("err: ", err);

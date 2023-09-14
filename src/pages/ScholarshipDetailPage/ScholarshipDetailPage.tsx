@@ -123,7 +123,7 @@ const ScholarshipDetailPage = () => {
             {dummyScholarshipDetail.description}
           </div> */}
           <div
-            className="whitespace-pre-line text-start px-10"
+            className="text-start px-10"
             dangerouslySetInnerHTML={{ __html: scholarshipDetail.html_file }}
           ></div>
         </div>
