@@ -23,7 +23,9 @@ const ProfilePage = () => {
   const userInfor = useSelector((state: any) => state.user.user);
   const token = useSelector((state: any) => state.user.token);
   const [gender, setGender] = useState(userInfor.gender);
-  const [dob, setDob] = useState(new Date(userInfor.dob));
+  const [dob, setDob] = useState(() =>
+    userInfor.dob ? new Date(userInfor.dob) : new Date(),
+  );
   const [nationality, setNationality] = useState(userInfor.nationality);
   const [education_level, setEducationLevel] = useState(
     userInfor.education_level,
@@ -56,18 +58,8 @@ const ProfilePage = () => {
     }
   };
 
-  const getUserProfile = async () => {
-    try {
-      const response = await UserServices.getUserInfo(token);
-      console.log("response: ", response);
-    } catch (err) {
-      console.log("err: ", err);
-    }
-  };
-
   useEffect(() => {
     getArchivementData();
-    getUserProfile();
   }, []);
 
   return (

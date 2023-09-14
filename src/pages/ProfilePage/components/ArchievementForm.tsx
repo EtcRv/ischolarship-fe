@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import AchievementServices from "src/services/AchievementServices/AchievementServices";
 
 const ArchievementForm = (props: any) => {
@@ -9,6 +10,53 @@ const ArchievementForm = (props: any) => {
   const [role, setRole] = useState(props.data.role);
   const [description, setDescription] = useState(props.data.description);
 
+  const navigate = useNavigate();
+
+  const handleCreateAchievement = async () => {
+    if (props.data.id === "") {
+      props.changeTitle("");
+      props.changeRole("");
+      props.changeDescription("");
+      const data = {
+        title,
+        role,
+        description,
+      };
+      try {
+        const res = await AchievementServices.createAchievement(token, data);
+        console.log("res: ", res);
+      } catch (err) {
+        console.log("err: ", err);
+      }
+      const minNum = 100000000;
+      const maxNum = 999999999;
+      props.changeAllArchievement({
+        id: Math.floor(Math.random() * (maxNum - minNum + 1) + minNum),
+        title,
+        role,
+        description,
+      });
+    } else {
+      props.changeTitle(title);
+      props.changeRole(role);
+      props.changeDescription(description);
+      const data = {
+        achievement_id: props.data.id,
+        title,
+        role,
+        description,
+      };
+      console.log(data);
+      try {
+        const res = await AchievementServices.updateAchievement(token, data);
+        console.log("res: ", res);
+      } catch (err) {
+        console.log("err: ", err);
+      }
+    }
+    props.changeEdit(false);
+    navigate(0);
+  };
   return (
     <div className="flex-col">
       <div className="flex flex-col w-9/12  my-6">
@@ -61,40 +109,7 @@ const ArchievementForm = (props: any) => {
         </button>
         <button
           className="w-20 mx-2 rounded bg-green-400 text-white p-2.5 items-center pointer border-[1px]  border-grey-200 hover:bg-green-500"
-          onClick={async () => {
-            if (props.data.id === "") {
-              props.changeTitle("");
-              props.changeRole("");
-              props.changeDescription("");
-              const data = {
-                title,
-                role,
-                description,
-              };
-              try {
-                const res = await AchievementServices.createAchievement(
-                  token,
-                  data,
-                );
-                console.log("res: ", res);
-              } catch (err) {
-                console.log("err: ", err);
-              }
-              const minNum = 100000000;
-              const maxNum = 999999999;
-              props.changeAllArchievement({
-                id: Math.floor(Math.random() * (maxNum - minNum + 1) + minNum),
-                title,
-                role,
-                description,
-              });
-            } else {
-              props.changeTitle(title);
-              props.changeRole(role);
-              props.changeDescription(description);
-            }
-            props.changeEdit(false);
-          }}
+          onClick={handleCreateAchievement}
         >
           Lưu
         </button>

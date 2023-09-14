@@ -9,10 +9,16 @@ const AchievementServices = {
     const headers = { authorization: token };
     return API().get(`/api/get_all_achievement`, { headers });
   },
-  deleteAchievement(token: string, achievement_id: string) {
+  updateAchievement(token: string, data: any) {
     const headers = { authorization: token };
-
-    return API().delete("/api/delete_achievement", { headers });
+    return API().put("/api/update_achievement", { ...data }, { headers });
+  },
+  deleteAchievement(token: string, data: any) {
+    const headers = { authorization: token };
+    return API().delete("/api/delete_achievement", {
+      params: { ...data },
+      headers,
+    });
   },
 };
 
