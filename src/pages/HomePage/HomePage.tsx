@@ -30,6 +30,7 @@ const HomePage = () => {
 
   const isLogin = useSelector((state: any) => state.user.isLogin);
   const isRecommend = useSelector((state: any) => state.setting.isRecommend);
+  const [isSearchingResult, setIsSearchingResult] = useState(false);
 
   const [searchParams] = useSearchParams();
   const token = useSelector((state: any) => state.user.token) || "";
@@ -94,6 +95,7 @@ const HomePage = () => {
           <BtnSearch
             setShowingData={setShowingData}
             scholarshipDataAll={scholarshipDataAll}
+            setIsSearchingResult={setIsSearchingResult}
           />
 
           <div className="mt-4 flex-col">
@@ -148,6 +150,7 @@ const HomePage = () => {
             {(isRecommend && scholarshipDataType === "recommend") ||
               (scholarshipDataType === "scholarship" &&
                 !isLoading &&
+                !isSearchingResult &&
                 searchParams.size === 0 && (
                   <div className="w-full justify-end flex">
                     <button

@@ -44,6 +44,7 @@ const ScholarshipComponent = (props: any) => {
   };
 
   const getTypeFromData = () => {
+    console.log(Number(data.type));
     if (Number(data.type) === 1) {
       setType("Học bổng hỗ trợ khó khăn");
     } else if (Number(data.type) === 2) {

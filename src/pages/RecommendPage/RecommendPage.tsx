@@ -180,7 +180,7 @@ const RecommendPage = () => {
                           </div>
                         );
                       })}
-                    {!showAddNewType && (
+                    {typeFilter.length === 0 && !showAddNewType && (
                       <button
                         className="text-blue-500 bg-white rounded-full flex p-1.5 m-2 items-center border-[1px] border-blue-500"
                         onClick={() => {
@@ -232,7 +232,7 @@ const RecommendPage = () => {
                           </div>
                         );
                       })}
-                    {!showAddNewEducation && (
+                    {educationFilter.length === 0 && !showAddNewEducation && (
                       <button
                         className="text-blue-500 bg-white rounded-full flex p-1.5 m-2 items-center border-[1px] border-blue-500"
                         onClick={() => {

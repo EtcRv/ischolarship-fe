@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 
-const BtnSearch = ({ setShowingData, scholarshipDataAll }: any) => {
+const BtnSearch = ({
+  setShowingData,
+  scholarshipDataAll,
+  setIsSearchingResult,
+}: any) => {
   const [valueInput, setValueInput] = useState("");
   const handleSearch = (e: any) => {
     e.preventDefault();
@@ -19,6 +23,7 @@ const BtnSearch = ({ setShowingData, scholarshipDataAll }: any) => {
       });
     });
     setShowingData(data);
+    setIsSearchingResult(true);
   };
   return (
     <form>
