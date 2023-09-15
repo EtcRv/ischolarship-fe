@@ -87,10 +87,6 @@ const ScholarshipDetailPage = () => {
           <div className="flex mx-auto text-[25px] text-green-400 my-2 justify-center">
             <span>{scholarshipDetail.type.toUpperCase()}</span>
           </div>
-          {/* <div className="flex w-full">
-            <span className="font-bold w-32">Loại học bổng:</span>
-            <span>{scholarshipDetail.type}</span>
-          </div> */}
           <div className="flex w-full my-2">
             <span className="font-bold min-w-[128px]">Giá trị:</span>
             <span>{scholarshipDetail["benefits/value"]}</span>
@@ -98,6 +94,18 @@ const ScholarshipDetailPage = () => {
           <div className="flex w-full my-2">
             <span className="font-bold min-w-[128px]">Trình độ:</span>
             <span>{scholarshipDetail.education_level}</span>
+          </div>
+          <div className="flex w-full my-2">
+            <span className="font-bold min-w-[128px]">Ngành:</span>
+            <span>{scholarshipDetail.majors}</span>
+          </div>
+          <div className="flex w-full my-2">
+            <span className="font-bold min-w-[128px]">Loại học bổng:</span>
+            <span>{scholarshipDetail.type}</span>
+          </div>
+          <div className="flex w-full my-2">
+            <span className="font-bold min-w-[128px]">Tổ chức:</span>
+            <span>{scholarshipDetail.organization}</span>
           </div>
           <div className="flex w-full my-2">
             <span className="font-bold min-w-[128px]">Hạn đăng ký:</span>
