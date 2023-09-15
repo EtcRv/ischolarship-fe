@@ -10,9 +10,8 @@ import Archievement from "./components/Archievement";
 import AchievementServices from "src/services/AchievementServices/AchievementServices";
 import { IoAddCircleOutline } from "react-icons/io5";
 import ArchievementForm from "./components/ArchievementForm";
-import UserServices from "src/services/UserServices/UserServices";
 
-type Archievement = {
+type ArchievementUser = {
   id: string;
   title: string;
   role: string;
@@ -33,20 +32,13 @@ const ProfilePage = () => {
   const [phone, setPhone] = useState(userInfor.phone);
   const [email, setEmail] = useState(userInfor.email);
   const [pageStatus, setPageStatus] = useState("profile");
-  const [allArchievement, setAllArchievement] = useState<Array<Archievement>>(
-    [],
-  );
+  const [allArchievement, setAllArchievement] = useState<
+    Array<ArchievementUser>
+  >([]);
   const [isEdit, setIsEdit] = useState(false);
   const [title, setTitle] = useState("");
   const [role, setRole] = useState("");
   const [description, setDescription] = useState("");
-
-  const exampleArchievement = {
-    id: 1,
-    title: "Freelancer Android Mobile App Developer",
-    role: "Freelancer",
-    description: "HELOOOO this is description",
-  };
 
   const getArchivementData = async () => {
     try {
@@ -60,6 +52,7 @@ const ProfilePage = () => {
 
   useEffect(() => {
     getArchivementData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -126,18 +119,20 @@ const ProfilePage = () => {
                   changeTitle={(value: string) => setTitle(value)}
                   changeRole={(value: string) => setRole(value)}
                   changeDescription={(value: string) => setDescription(value)}
-                  changeAllArchievement={(value: Archievement) => {
+                  changeAllArchievement={(value: ArchievementUser) => {
                     setAllArchievement([...allArchievement, value]);
                     console.log("allArchievement: ", allArchievement);
                   }}
                 ></ArchievementForm>
               </div>
             )}
-            {allArchievement.map((archievement: Archievement, idx: number) => (
-              <div className="flex-col mx-[60px] my-2" key={idx}>
-                <Archievement data={archievement} />
-              </div>
-            ))}
+            {allArchievement.map(
+              (archievement: ArchievementUser, idx: number) => (
+                <div className="flex-col mx-[60px] my-2" key={idx}>
+                  <Archievement data={archievement} />
+                </div>
+              ),
+            )}
           </div>
         </div>
       </div>

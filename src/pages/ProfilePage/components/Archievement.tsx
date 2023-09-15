@@ -7,7 +7,6 @@ import AchievementServices from "src/services/AchievementServices/AchievementSer
 import { useNavigate } from "react-router-dom";
 
 const Archievement = (props: any) => {
-  const userId = useSelector((state: any) => state.user.user.id);
   const token = useSelector((state: any) => state.user.token);
   const [title, setTitle] = useState(props.data.title);
   const [role, setRole] = useState(props.data.role);

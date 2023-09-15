@@ -1,14 +1,10 @@
 import DefaultLayout from "src/components/layout/DefaultLayout/DefaultLayout";
 import ProfilePageSideBar from "src/components/userPageSideBar/ProfilePageSideBar";
-import { DegreeType, Scholarship, ScholarshipType } from "src/models";
 import { useEffect, useState } from "react";
-import ScholarshipComponent from "src/components/scholarshipComponent/ScholarshipComponent";
 import { useSelector } from "react-redux";
 import ScholarshipUserServices from "src/services/ScholarshipUserServices/ScholarshipUserServices";
 import ScholarshipInShortlisted from "./components/ScholarshipInShortlisted";
 import { Spin } from "antd";
-
-const sampleShortlisted: Array<Scholarship> = [];
 
 const ShortlistedPage = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -18,6 +14,7 @@ const ShortlistedPage = () => {
   const removeScholarship = (id: string) => {
     const newArr = shortlisted.filter((scholarship: any) => {
       if (scholarship.data._id !== id) return scholarship;
+      return null;
     });
     setShortlisted(newArr);
   };
@@ -36,6 +33,7 @@ const ShortlistedPage = () => {
 
   useEffect(() => {
     getShortlistedData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
     <DefaultLayout>
@@ -45,7 +43,9 @@ const ShortlistedPage = () => {
         </div>
         <div className="w-9/12 text-center border-2 border-slate-200 bg-white">
           <div className="border-2 border-l-0 border-t-0 border-r-0  py-6  border-slate-200">
-            <div className="font-bold text-lg text-green-500 ">Shortlisted</div>
+            <div className="font-bold text-lg text-green-500 ">
+              Danh sách quan tâm
+            </div>
             <div className="text-base">Danh sách học bổng mà bạn quan tâm</div>
           </div>
           <div className="flex-col p-6 text-start items-center">

@@ -1,8 +1,6 @@
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import DefaultLayout from "src/components/layout/DefaultLayout/DefaultLayout";
 import ProfilePageSideBar from "src/components/userPageSideBar/ProfilePageSideBar";
-import { updateRecommendStatus } from "src/store/settingSlice";
 
 const SettingPage = () => {
   const [currentPassword, setCurrentPassword] = useState("");

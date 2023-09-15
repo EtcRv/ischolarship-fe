@@ -1,6 +1,5 @@
 import { BsGenderAmbiguous, BsFlag, BsPhone } from "react-icons/bs";
 import { MdCalendarToday } from "react-icons/md";
-import { CiLocationOn } from "react-icons/ci";
 import { AiOutlineMail } from "react-icons/ai";
 import { FaGraduationCap } from "react-icons/fa";
 import DatePicker from "react-datepicker";

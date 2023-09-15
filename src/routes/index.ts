@@ -1,7 +1,5 @@
 import {
-  LoginPage,
-  RegisterPage,
-  HomePage,
+
   ProfilePage,
   ShortlistedPage,
   RecommendPage,

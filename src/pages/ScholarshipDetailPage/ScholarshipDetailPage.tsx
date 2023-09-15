@@ -74,6 +74,7 @@ const ScholarshipDetailPage = () => {
 
   useEffect(() => {
     getScholarshipData(scholarshipId);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

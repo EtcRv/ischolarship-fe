@@ -1,5 +1,5 @@
 import { useState, useCallback } from "react";
-import { Divider, Form, Input } from "antd";
+import { Form, Input } from "antd";
 import { useNavigate } from "react-router-dom";
 import { formItemLayout, REGEX } from "../../utils";
 import AuthenticationLayout from "../../components/layout/AuthenticationLayout/AuthenticationLayout";
@@ -15,11 +15,11 @@ const RegisterPage = () => {
     const data = formItemLayout;
     data.wrapperCol.xs.span = 24;
     return data;
-  }, [formItemLayout]);
+  }, []);
 
   const onFinish = async (values: any) => {
     try {
-      const res = await AuthenticationServices.register({
+      await AuthenticationServices.register({
         user_name: values.name,
         email: values.email,
         password: values.password,

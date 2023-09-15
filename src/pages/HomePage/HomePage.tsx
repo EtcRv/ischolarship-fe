@@ -34,6 +34,7 @@ const HomePage = () => {
   const [searchParams] = useSearchParams();
   const token = useSelector((state: any) => state.user.token) || "";
   const [shortlisted, setShortlisted] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const getAllScholarshipData = async () => {
     try {
@@ -44,6 +45,8 @@ const HomePage = () => {
     }
   };
   const getScholarshipData = async (pageNumber: number) => {
+    setIsLoading(true);
+    setShowingData([]);
     try {
       const response =
         await ScholarshipServices.getAllScholarByPage(pageNumber);
@@ -59,6 +62,7 @@ const HomePage = () => {
     } catch (err) {
       console.log("err: ", err);
     }
+    setIsLoading(false);
   };
 
   const getShortlistedData = async () => {
@@ -76,7 +80,8 @@ const HomePage = () => {
     if (isLogin) {
       getShortlistedData();
     }
-  });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <DefaultLayout>
@@ -92,7 +97,7 @@ const HomePage = () => {
           />
 
           <div className="mt-4 flex-col">
-            {isLogin && (
+            {/* {isLogin && (
               <div className="flex w-full border-grey-200 border-b-[2px]">
                 <button
                   className={` p-2.5 ${
@@ -121,9 +126,9 @@ const HomePage = () => {
                   Học bổng gợi ý
                 </button>
               </div>
-            )}
+            )} */}
 
-            {scholarshipData.length === 0 && (
+            {isLoading && (
               <div className="flex justify-center my-8">
                 <Spin tip="Loading" size="large" />
               </div>
@@ -142,6 +147,7 @@ const HomePage = () => {
             )}
             {(isRecommend && scholarshipDataType === "recommend") ||
               (scholarshipDataType === "scholarship" &&
+                !isLoading &&
                 searchParams.size === 0 && (
                   <div className="w-full justify-end flex">
                     <button

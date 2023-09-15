@@ -1,6 +1,5 @@
 import { BsGenderAmbiguous, BsFlag, BsPhone } from "react-icons/bs";
 import { MdCalendarToday } from "react-icons/md";
-import { CiLocationOn } from "react-icons/ci";
 import { AiOutlineMail } from "react-icons/ai";
 import { FaGraduationCap } from "react-icons/fa";
 import { useState } from "react";
@@ -192,7 +191,7 @@ const UpdateProfile = (props: any) => {
                 },
               }),
             );
-            const res = await UserServices.updateUserInfo(props.token, {
+            await UserServices.updateUserInfo(props.token, {
               education_level: education_level,
               nationality: nationality,
               sex: gender,

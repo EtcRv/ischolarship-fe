@@ -22,7 +22,7 @@ const LoginPage = () => {
     const data = formItemLayout;
     data.wrapperCol.xs.span = 24;
     return data;
-  }, [formItemLayout]);
+  }, []);
 
   const onFinish = async (values: any) => {
     try {
@@ -75,13 +75,14 @@ const LoginPage = () => {
         // ...
       })
       .catch((error) => {
+        console.log("error: ", error);
         // Handle Errors here.
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        // The email of the user's account used.
-        const email = error.customData.email;
-        // The AuthCredential type that was used.
-        const credential = GoogleAuthProvider.credentialFromError(error);
+        // const errorCode = error.code;
+        // const errorMessage = error.message;
+        // // The email of the user's account used.
+        // const email = error.customData.email;
+        // // The AuthCredential type that was used.
+        // const credential = GoogleAuthProvider.credentialFromError(error);
         // ...
       });
   };

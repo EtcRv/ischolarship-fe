@@ -13,7 +13,7 @@ const FilterComponent = ({ setShowingData, scholarshipDataAll }: any) => {
     let data = scholarshipDataAll;
     arrayFilter.forEach((filter: any) => {
       const test = data.filter((element: any) => {
-        return element[filter.key] == filter.value;
+        return element[filter.key] === filter.value;
       });
       data = test;
     });

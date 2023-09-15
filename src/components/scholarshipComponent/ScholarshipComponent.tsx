@@ -22,7 +22,8 @@ const ScholarshipComponent = (props: any) => {
   useEffect(() => {
     getEducationLevelFromData();
     getTypeFromData();
-  });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const getEducationLevelFromData = () => {
     let edu_levels = data.education_level.trim().split(",");
@@ -127,7 +128,7 @@ const ScholarshipComponent = (props: any) => {
             }}
           >
             <AiOutlineStar className="mr-2" />
-            Thêm vào Shortlisted
+            Quan tâm
           </button>
         )}
 
@@ -136,7 +137,7 @@ const ScholarshipComponent = (props: any) => {
             className="flex mt-2 rounded bg-white text-gray-400 p-2 items-center pointer border-[1px] border-gray-400 hover:border-black hover:text-black"
             onClick={() => navigate("/shortlisted")}
           >
-            Chuyển tới Shortlisted
+            Chuyển tới danh sách quan tâm
           </button>
         )}
         <button

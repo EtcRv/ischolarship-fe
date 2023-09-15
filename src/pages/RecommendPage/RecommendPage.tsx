@@ -1,7 +1,6 @@
-import { scholarship1 } from "src/assets";
 import DefaultLayout from "src/components/layout/DefaultLayout/DefaultLayout";
 import ProfilePageSideBar from "src/components/userPageSideBar/ProfilePageSideBar";
-import { DegreeType, Scholarship, ScholarshipType } from "src/models";
+import { Scholarship } from "src/models";
 import { useState } from "react";
 import { IoMdRemoveCircleOutline } from "react-icons/io";
 import { AiOutlinePlus } from "react-icons/ai";
@@ -169,8 +168,10 @@ const RecommendPage = () => {
                                 const newArr = typeFilter.filter(
                                   (typeF: any) => {
                                     if (typeF.type !== type.type) return typeF;
+                                    return null;
                                   },
                                 );
+                                console.log("newArr: ", newArr);
                                 setTypeFilter(newArr);
                               }}
                             >
@@ -220,6 +221,7 @@ const RecommendPage = () => {
                                 const newArr = educationFilter.filter(
                                   (eduF: any) => {
                                     if (eduF.type !== edu.type) return eduF;
+                                    return null;
                                   },
                                 );
                                 setEducationLevel(newArr);

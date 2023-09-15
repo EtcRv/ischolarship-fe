@@ -1,7 +1,6 @@
 import { Scholarship } from "src/models";
 import ScholarshipComponent from "src/components/scholarshipComponent/ScholarshipComponent";
 import { useSelector } from "react-redux";
-import { useState } from "react";
 
 const ListScholarship = (props: any) => {
   const token = useSelector((state: any) => state.user.token);
@@ -22,7 +21,7 @@ const ListScholarship = (props: any) => {
             <ScholarshipComponent
               data={scholarship}
               isShorlisted={shortlisted.some(
-                (item: any) => item._id == scholarship._id,
+                (item: any) => item._id === scholarship._id,
               )}
               removeScholarship={(id: string) => {}}
               token={token}

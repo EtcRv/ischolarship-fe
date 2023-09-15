@@ -3,16 +3,14 @@ import { FaGraduationCap } from "react-icons/fa";
 import { GrOrganization } from "react-icons/gr";
 import { BsFlag } from "react-icons/bs";
 import { BiEdit, BiBookOpen } from "react-icons/bi";
-import { AiOutlineStar } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
-import { IoMdRemove } from "react-icons/io";
 import { scholarship1 } from "src/assets";
 import { useEffect, useState } from "react";
 import ScholarshipUserServices from "src/services/ScholarshipUserServices/ScholarshipUserServices";
 
 const allStatus = [
   {
-    name: "Shortlist",
+    name: "Quan tâm",
     value: 1,
   },
   {
@@ -44,6 +42,7 @@ const ScholarshipInShortlisted = (props: any) => {
   useEffect(() => {
     getEducationLevelFromData();
     getTypeFromData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const getEducationLevelFromData = () => {
@@ -96,6 +95,7 @@ const ScholarshipInShortlisted = (props: any) => {
           <img
             className="w-full h-full m-auto"
             src={data.image || scholarship1}
+            alt=""
           ></img>
         </div>
         <div className="flex-col mx-4 w-2/3">
@@ -139,31 +139,29 @@ const ScholarshipInShortlisted = (props: any) => {
             const statusValue = e.currentTarget.value;
             setIsShorlisted(Number(statusValue));
             if (Number(statusValue) === 5) {
-              const deleteRes =
-                await ScholarshipUserServices.deleteFromShortlist(
-                  props.token,
-                  data._id,
-                );
-              const discardRes =
-                await ScholarshipUserServices.discardFromShortlist(
-                  props.token,
-                  data._id,
-                  {
-                    label: 0,
-                    status: 5,
-                  },
-                );
+              await ScholarshipUserServices.deleteFromShortlist(
+                props.token,
+                data._id,
+              );
+
+              await ScholarshipUserServices.discardFromShortlist(
+                props.token,
+                data._id,
+                {
+                  label: 0,
+                  status: 5,
+                },
+              );
               props.removeScholarship(data._id);
             } else {
-              const updateRes =
-                await ScholarshipUserServices.updateScholarshipInShortlist(
-                  props.token,
-                  data._id,
-                  {
-                    label: 1,
-                    status: Number(statusValue),
-                  },
-                );
+              await ScholarshipUserServices.updateScholarshipInShortlist(
+                props.token,
+                data._id,
+                {
+                  label: 1,
+                  status: Number(statusValue),
+                },
+              );
             }
           }}
         >
