@@ -54,7 +54,11 @@ const ProfilePageSideBar = () => {
       <div className="p-6 text-center">
         <div className="mx-auto mb-3">
           <label className=" w-48 h-48 " htmlFor="changeImage">
-            <img src={avatar} className="rounded-full w-48 h-48 mx-auto"></img>
+            <img
+              src={avatar}
+              className="rounded-full w-48 h-48 mx-auto"
+              alt=""
+            ></img>
             <input
               type="file"
               onChange={handleChange}

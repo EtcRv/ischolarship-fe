@@ -1,4 +1,3 @@
-import AuthenticationHeader from "./AuthenticationHeader/AuthenticationHeader";
 import { useNavigate } from "react-router-dom";
 
 const AuthenticationLayout = ({ children }: any) => {

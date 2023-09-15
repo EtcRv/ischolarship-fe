@@ -5,7 +5,6 @@ import { BsFlag } from "react-icons/bs";
 import { BiEdit, BiBookOpen } from "react-icons/bi";
 import { AiOutlineStar } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
-import { IoMdRemove } from "react-icons/io";
 import { scholarship1 } from "src/assets";
 import { useEffect, useState } from "react";
 import ScholarshipUserServices from "src/services/ScholarshipUserServices/ScholarshipUserServices";
@@ -23,7 +22,7 @@ const ScholarshipComponent = (props: any) => {
   useEffect(() => {
     getEducationLevelFromData();
     getTypeFromData();
-  }, []);
+  });
 
   const getEducationLevelFromData = () => {
     let edu_levels = data.education_level.trim().split(",");
@@ -75,6 +74,7 @@ const ScholarshipComponent = (props: any) => {
           <img
             className="w-full h-full m-auto"
             src={data.image || scholarship1}
+            alt=""
           ></img>
         </div>
         <div className="flex-col mx-4 w-2/3">
@@ -115,7 +115,7 @@ const ScholarshipComponent = (props: any) => {
             className="flex mt-2 rounded bg-orange-400 text-white p-2 items-center pointer border-grey-200 hover:bg-orange-500"
             onClick={async () => {
               if (isLogin) {
-                const res = await ScholarshipUserServices.addToShortlist(
+                await ScholarshipUserServices.addToShortlist(
                   props.token,
                   data._id,
                   { label: 1, status: 1 },
@@ -136,7 +136,6 @@ const ScholarshipComponent = (props: any) => {
             className="flex mt-2 rounded bg-white text-gray-400 p-2 items-center pointer border-[1px] border-gray-400 hover:border-black hover:text-black"
             onClick={() => navigate("/shortlisted")}
           >
-            {/* <IoMdRemove className="mr-2" /> */}
             Chuyển tới Shortlisted
           </button>
         )}

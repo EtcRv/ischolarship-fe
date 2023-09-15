@@ -1,7 +1,6 @@
 import DefaultLayout from "src/components/layout/DefaultLayout/DefaultLayout";
-import { DegreeType, ScholarshipType, Scholarship } from "src/models";
+import { Scholarship } from "src/models";
 import ListScholarship from "./components/ListScholarship";
-import { scholarship1 } from "src/assets";
 import { useEffect, useState } from "react";
 import FilterComponent from "./components/FilterComponent";
 import ScholarshipServices from "src/services/ScholarshipServices/ScholarshipServices";
@@ -23,7 +22,8 @@ const HomePage = () => {
   const [showingData, setShowingData] =
     useState<Array<Scholarship>>(scholarshipData);
 
-  const [recommendData, setRecommendData] = useState<Array<Scholarship>>([]);
+  // const [recommendData, setRecommendData] = useState<Array<Scholarship>>([]);
+  const recommendData: Array<Scholarship> = [];
   const [scholarshipDataType, setScholarshipDataType] = useState("scholarship");
   const [allPage, setAllPage] = useState<Array<number>>([]);
   const [currentNum, setCurrentNum] = useState(1);
@@ -32,9 +32,7 @@ const HomePage = () => {
   const isRecommend = useSelector((state: any) => state.setting.isRecommend);
 
   const [searchParams] = useSearchParams();
-  const [token, setToken] = useState(
-    useSelector((state: any) => state.user.token) || "",
-  );
+  const token = useSelector((state: any) => state.user.token) || "";
   const [shortlisted, setShortlisted] = useState([]);
 
   const getAllScholarshipData = async () => {
@@ -78,7 +76,7 @@ const HomePage = () => {
     if (isLogin) {
       getShortlistedData();
     }
-  }, []);
+  });
 
   return (
     <DefaultLayout>

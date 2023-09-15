@@ -74,6 +74,7 @@ const DefaultLayoutHeader = () => {
                 <img
                   src={userAvatar}
                   className="w-full h-full rounded-full"
+                  alt=""
                 ></img>
               </button>
               <IoMdArrowDropdown className="w-7 h-7" />
