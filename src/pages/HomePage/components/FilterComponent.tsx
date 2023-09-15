@@ -37,13 +37,21 @@ const FilterComponent = ({ setShowingData, scholarshipDataAll }: any) => {
   };
 
   const getAllTypeData = async () => {
-    const res = await ScholarshipServices.getAllScholarshipType();
-    setAllType(res.data.data);
+    try {
+      const res = await ScholarshipServices.getAllScholarshipType();
+      setAllType(res.data.data);
+    } catch (err) {
+      console.log("err: ", err);
+    }
   };
 
   const getAllEducationLevel = async () => {
-    const res = await ScholarshipServices.getAllScholarshipEducationLevel();
-    setAllEducationLevel(res.data.data);
+    try {
+      const res = await ScholarshipServices.getAllScholarshipEducationLevel();
+      setAllEducationLevel(res.data.data);
+    } catch (err) {
+      console.log("err: ", err);
+    }
   };
 
   useEffect(() => {

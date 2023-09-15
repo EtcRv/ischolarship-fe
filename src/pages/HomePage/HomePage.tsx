@@ -38,25 +38,38 @@ const HomePage = () => {
   const [shortlisted, setShortlisted] = useState([]);
 
   const getAllScholarshipData = async () => {
-    const response = await ScholarshipServices.getAllScholar();
-    setScholarshipDataAll(response.data.scholarship);
+    try {
+      const response = await ScholarshipServices.getAllScholar();
+      setScholarshipDataAll(response.data.scholarship);
+    } catch (err) {
+      console.log("err: ", err);
+    }
   };
   const getScholarshipData = async (pageNumber: number) => {
-    const response = await ScholarshipServices.getAllScholarByPage(pageNumber);
-    setScholarshipData(response.data.scholarship);
-    setShowingData(response.data.scholarship);
-
-    let newAllPageNumber = [];
-    for (var i = 1; i <= response.data.total_page; i++) {
-      newAllPageNumber.push(i);
+    try {
+      const response =
+        await ScholarshipServices.getAllScholarByPage(pageNumber);
+      setScholarshipData(response.data.scholarship);
+      setShowingData(response.data.scholarship);
+      console.log("response.data.scholarship: ", response.data.scholarship);
+      let newAllPageNumber = [];
+      for (var i = 1; i <= response.data.total_page; i++) {
+        newAllPageNumber.push(i);
+      }
+      setAllPage(newAllPageNumber);
+      setCurrentNum(pageNumber);
+    } catch (err) {
+      console.log("err: ", err);
     }
-    setAllPage(newAllPageNumber);
-    setCurrentNum(pageNumber);
   };
 
   const getShortlistedData = async () => {
-    const res = await ScholarshipUserServices.getAllShortlist(token);
-    setShortlisted(res.data);
+    try {
+      const res = await ScholarshipUserServices.getAllShortlist(token);
+      setShortlisted(res.data);
+    } catch (err) {
+      console.log("err: ", err);
+    }
   };
 
   useEffect(() => {

@@ -16,6 +16,9 @@ const ScholarshipServices = {
   getAllScholarshipEducationLevel() {
     return API().get("/api/get_all_educationlevel");
   },
+  getRecommendation(data: any) {
+    return API().post('/api/get_recommendation', {...data})
+  }
 };
 
 export default ScholarshipServices;

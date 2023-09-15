@@ -7,7 +7,7 @@ const UserServices = {
     },
     updateUserInfo(token: string, data: any) {
         const headers = { authorization: token};
-        return API().put('/api/update_user_info', {data}, {headers})
+        return API().put('/api/update_user_info', {...data}, {headers})
     }
 }
 

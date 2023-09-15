@@ -8,11 +8,8 @@ const SettingPage = () => {
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [rePassword, setRePassword] = useState("");
-  const [recommendMode, setRecommendMode] = useState(
-    useSelector((state: any) => state.setting.isRecommend),
-  );
+
   const [sendMail, setSendMail] = useState(true);
-  const dispatch = useDispatch();
 
   return (
     <DefaultLayout>
@@ -92,24 +89,6 @@ const SettingPage = () => {
                     <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none  rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
                     <span className="ml-3 text-sm font-medium text-gray-900">
                       Gửi mail khi có học bổng phù hợp!
-                    </span>
-                  </label>
-                </div>
-                <div>
-                  <label className="relative inline-flex items-center cursor-pointer my-2">
-                    <input
-                      checked={recommendMode}
-                      type="checkbox"
-                      value=""
-                      className="sr-only peer"
-                      onClick={() => {
-                        setRecommendMode(!recommendMode);
-                        dispatch(updateRecommendStatus());
-                      }}
-                    />
-                    <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none  rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
-                    <span className="ml-3 text-sm font-medium text-gray-900">
-                      Tự động tìm kiếm học bổng!
                     </span>
                   </label>
                 </div>

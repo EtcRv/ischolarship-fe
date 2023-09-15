@@ -1,10 +1,11 @@
 const SelectedFilter = (props: any) => {
   const addNewElements = (
-    filter: Array<string>,
-    element: string,
+    filter: Array<any>,
+    element: any,
     setFilter: Function,
   ) => {
-    if (!filter.includes(element)) setFilter([...filter, element]);
+    const valueOnClick = JSON.parse(element);
+    if (!filter.includes(valueOnClick)) setFilter([...filter, valueOnClick]);
   };
   return (
     <div className="flex my-4 justify-center">
@@ -20,10 +21,13 @@ const SelectedFilter = (props: any) => {
         }}
       >
         <option selected>{props.emptyValue}</option>
-        {props.allValue.map((value: string, idx: number) => {
+        {props.allValue.map((value: any, idx: number) => {
           return (
-            <option value={value} key={idx}>
-              {value}
+            <option
+              value={JSON.stringify({ type: value.type, value: value.value })}
+              key={idx}
+            >
+              {value.type}
             </option>
           );
         })}
