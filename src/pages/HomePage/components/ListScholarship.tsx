@@ -1,14 +1,15 @@
 import { Scholarship } from "src/models";
 import ScholarshipComponent from "src/components/scholarshipComponent/ScholarshipComponent";
 import { useSelector } from "react-redux";
+import { useState } from "react";
 
 const ListScholarship = (props: any) => {
   const token = useSelector((state: any) => state.user.token);
-
-  const shortlisted =
+  const [shortlisted, setShortlisted] = useState(
     props.shortlisted.length > 0
       ? props.shortlisted.map((ele: any, idx: number) => ele.data)
-      : [];
+      : [],
+  );
 
   return (
     <div className="">

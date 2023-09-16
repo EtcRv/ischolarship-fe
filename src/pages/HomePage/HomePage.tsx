@@ -76,11 +76,11 @@ const HomePage = () => {
   };
 
   useEffect(() => {
-    getScholarshipData(1);
-    getAllScholarshipData();
     if (isLogin) {
       getShortlistedData();
     }
+    getScholarshipData(1);
+    getAllScholarshipData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

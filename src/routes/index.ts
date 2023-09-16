@@ -1,5 +1,6 @@
+import NewDBPage from "src/pages/AdminPage/DatabasePage/NewDBPage";
 import {
-
+  DatabasePage,
   ProfilePage,
   ShortlistedPage,
   RecommendPage,
@@ -39,6 +40,10 @@ const routes = [
   {
     path: "/scholarship/:id",
     component: ScholarshipDetailPage,
+  },
+  {
+    path: '/admin/database',
+    component: NewDBPage,
   },
 ];
 

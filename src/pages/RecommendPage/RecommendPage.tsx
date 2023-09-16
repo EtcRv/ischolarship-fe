@@ -34,6 +34,10 @@ const allTypeValues = [
 
 const allEducationLevelValues = [
   {
+    type: "Tất cả các ngành hoặc không có thông tin cụ thể",
+    value: 0,
+  },
+  {
     type: "Trung cấp",
     value: 1,
   },
@@ -53,6 +57,53 @@ const allEducationLevelValues = [
     type: "Tiến sĩ",
     value: 5,
   },
+  {
+    type: "Sau tiến sĩ",
+    value: 6,
+  },
+];
+
+const allMajorsValues = [
+  {
+    type: "Không có thông tin hoặc là tất cả các ngành",
+    value: 0,
+  },
+  {
+    type: "Kiến trúc và xây dựng",
+    value: 1,
+  },
+  {
+    type: "Kinh doanh và thương mại",
+    value: 2,
+  },
+  {
+    type: "Công nghệ thông tin",
+    value: 3,
+  },
+  {
+    type: " Luật - nhân văn",
+    value: 4,
+  },
+  {
+    type: "Báo chí - Khoa học xã hội",
+    value: 5,
+  },
+  {
+    type: "Y tế",
+    value: 6,
+  },
+  {
+    type: "Khoa học cơ bản",
+    value: 7,
+  },
+  {
+    type: "Sư phạm",
+    value: 8,
+  },
+  {
+    type: "Kỹ thuật - công nghiệp",
+    value: 9,
+  },
 ];
 
 const RecommendPage = () => {
@@ -62,8 +113,10 @@ const RecommendPage = () => {
   const [educationFilter, setEducationLevel] = useState<Array<ValueFilterType>>(
     [],
   );
+  const [majorFilter, setMajorLevel] = useState<Array<ValueFilterType>>([]);
   const [showAddNewType, setShowAddNewType] = useState(false);
   const [showAddNewEducation, setShowAddNewEducation] = useState(false);
+  const [showAddNewMajor, setShowAddNewMajor] = useState(false);
   const [listRecommend, setListRecommend] = useState<Array<Scholarship>>([]);
   const [recommendMode, setRecommendMode] = useState(
     useSelector((state: any) => state.setting.isRecommend),
@@ -74,6 +127,7 @@ const RecommendPage = () => {
     setListRecommend([]);
     let typeValue;
     let educationValue;
+    let majorValue;
     if (typeFilter.length > 0) {
       typeValue = typeFilter[0].value;
     }
@@ -81,12 +135,18 @@ const RecommendPage = () => {
     if (educationFilter.length > 0) {
       educationValue = educationFilter[0].value;
     }
+
+    if (majorFilter.length > 0) {
+      majorValue = majorFilter[0].value;
+    }
     try {
       setIsGetting(true);
       const response = await ScholarshipServices.getRecommendation({
         type: typeValue,
         education_level: "" + educationValue,
+        majors: "" + majorValue,
       });
+      console.log("response: ", response);
       setListRecommend(response.data);
       setIsGetting(false);
     } catch (err) {
@@ -252,6 +312,58 @@ const RecommendPage = () => {
                         setElement={setEducationLevel}
                         currentElements={educationFilter}
                         close={setShowAddNewEducation}
+                      ></SelectedFilter>
+                    </div>
+                  )}
+                </div>
+
+                <div className="flex-col my-2">
+                  <h2 className="mb-2">Scholarship Major*</h2>
+                  <div className="flex flex-wrap">
+                    {majorFilter.length > 0 &&
+                      majorFilter.map((edu: any, idx: number) => {
+                        return (
+                          <div
+                            className="text-white bg-green-500 rounded-full flex p-1.5 m-2 items-center border-[1px] border-green-500"
+                            key={idx}
+                          >
+                            <span>{edu.type}</span>
+                            <button
+                              onClick={() => {
+                                const newArr = majorFilter.filter(
+                                  (eduF: any) => {
+                                    if (eduF.type !== edu.type) return eduF;
+                                    return null;
+                                  },
+                                );
+                                setMajorLevel(newArr);
+                              }}
+                            >
+                              <IoMdRemoveCircleOutline className="ml-2" />
+                            </button>
+                          </div>
+                        );
+                      })}
+                    {majorFilter.length === 0 && !showAddNewMajor && (
+                      <button
+                        className="text-blue-500 bg-white rounded-full flex p-1.5 m-2 items-center border-[1px] border-blue-500"
+                        onClick={() => {
+                          setShowAddNewMajor(true);
+                        }}
+                      >
+                        <AiOutlinePlus className="mr-2" />
+                        <span>Add Major</span>
+                      </button>
+                    )}
+                  </div>
+                  {showAddNewMajor && (
+                    <div className="w-1/2">
+                      <SelectedFilter
+                        emptyValue="Select Major"
+                        allValue={allMajorsValues}
+                        setElement={setMajorLevel}
+                        currentElements={majorFilter}
+                        close={setShowAddNewMajor}
                       ></SelectedFilter>
                     </div>
                   )}

@@ -18,6 +18,13 @@ const ScholarshipServices = {
   },
   getRecommendation(data: any) {
     return API().post('/api/get_recommendation', {...data})
+  },
+  updateScholarshipInfo(scholarshipId: string ,data: any) {
+    return API().put('/api/update_scholarship_info', {...data}, {
+      params: {
+        scholarship_id: scholarshipId
+      }
+    })
   }
 };
 

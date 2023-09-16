@@ -10,6 +10,34 @@ import { useEffect, useState } from "react";
 import ScholarshipUserServices from "src/services/ScholarshipUserServices/ScholarshipUserServices";
 import { useSelector } from "react-redux";
 
+const typeData = [
+  "Học bổng hỗ trợ khó khăn",
+  "Học bổng doanh nghiệp",
+  "Học bổng đại học/ du học",
+];
+const educationLevelData = [
+  "Tất cả các ngành hoặc không có thông tin cụ thể",
+  "Trung cấp",
+  "Cao đẳng",
+  "Đại học",
+  "Thạc sĩ",
+  "Tiến sĩ",
+  "Sau tiến sĩ",
+];
+
+const majorsData = [
+  "Không có thông tin hoặc là tất cả các ngành",
+  "Kiến trúc và xây dựng",
+  "Kinh doanh và thương mại",
+  "Công nghệ thông tin",
+  " Luật - nhân văn",
+  "Báo chí - Khoa học xã hội",
+  "Y tế",
+  "Khoa học cơ bản",
+  "Sư phạm",
+  "Kỹ thuật - công nghiệp",
+];
+
 const ScholarshipComponent = (props: any) => {
   const data: Scholarship = props.data;
   const isLogin = useSelector((state: any) => state.user.isLogin);
@@ -18,40 +46,39 @@ const ScholarshipComponent = (props: any) => {
 
   const [education_level, setEducationLevel] = useState("");
   const [type, setType] = useState("");
+  const [major, setMajor] = useState("");
 
   useEffect(() => {
     getEducationLevelFromData();
     getTypeFromData();
+    getMajorFromData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const getEducationLevelFromData = () => {
     let edu_levels = data.education_level.trim().split(",");
     for (let i = 0; i < edu_levels.length; i++) {
-      if (edu_levels[i] === "1") {
-        edu_levels[i] = "Trung cấp";
-      } else if (edu_levels[i] === "2") {
-        edu_levels[i] = "Cao đẳng";
-      } else if (edu_levels[i] === "3") {
-        edu_levels[i] = "Đại học";
-      } else if (edu_levels[i] === "4") {
-        edu_levels[i] = "Thạc sĩ";
-      } else if (edu_levels[i] === "5") {
-        edu_levels[i] = "Tiến sĩ";
-      }
+      edu_levels[i] = educationLevelData[parseInt(edu_levels[i])];
     }
     setEducationLevel(edu_levels.join(", "));
   };
 
   const getTypeFromData = () => {
-    console.log(Number(data.type));
-    if (Number(data.type) === 1) {
+    if (parseInt(data.type) === 1) {
       setType("Học bổng hỗ trợ khó khăn");
-    } else if (Number(data.type) === 2) {
+    } else if (parseInt(data.type) === 2) {
       setType("Học bổng đại học/ du học");
-    } else if (Number(data.type) === 3) {
+    } else if (parseInt(data.type) === 3) {
       setType("Học bổng tổ chức/ doanh nghiệp");
     }
+  };
+
+  const getMajorFromData = () => {
+    let majorData = data.majors.trim().split(",");
+    for (let i = 0; i < majorData.length; i++) {
+      majorData[i] = majorsData[parseInt(majorData[i])];
+    }
+    setMajor(majorData.join(", "));
   };
 
   const checkTime = () => {
@@ -95,8 +122,7 @@ const ScholarshipComponent = (props: any) => {
               <GrOrganization className="mx-2 my-auto" /> {data.organization}
             </span>
             <span className="flex my-[3px]">
-              <BiBookOpen className="mx-2 my-auto min-w-[16px] " />{" "}
-              {data.majors}
+              <BiBookOpen className="mx-2 my-auto min-w-[16px] " /> {major}
             </span>
           </div>
         </div>
