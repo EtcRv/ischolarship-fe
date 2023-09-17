@@ -13,6 +13,7 @@ import { useNavigate } from "react-router-dom";
 import { Checkbox } from "antd";
 import type { CheckboxChangeEvent } from "antd/es/checkbox";
 import SuccessMessage from "src/components/successMessage/SuccessMessage";
+import axios from "axios";
 
 interface DataType {
   _id: string;
@@ -56,91 +57,125 @@ const majorsData = [
 ];
 
 const ApiPage = () => {
-  const columns: ColumnsType<DataType> = [
+  // const columns: ColumnsType<DataType> = [
+  //   {
+  //     title: "Title",
+  //     dataIndex: "title",
+  //     key: "title",
+  //   },
+  //   {
+  //     title: "Organization",
+  //     dataIndex: "organization",
+  //     key: "organization",
+  //   },
+  //   {
+  //     title: "Deadline",
+  //     dataIndex: "deadline",
+  //     key: "deadline",
+  //   },
+  //   {
+  //     title: "Type",
+  //     dataIndex: "type",
+  //     key: "type",
+  //     render: (text) => {
+  //       if (text === 1) {
+  //         return <p>Học bổng hỗ trợ khó khăn</p>;
+  //       } else if (text === 2) {
+  //         return <p>Học bổng doanh nghiệp</p>;
+  //       } else if (text === 3) {
+  //         return <p>Học bổng đại học/du học</p>;
+  //       }
+  //       return text;
+  //     },
+  //   },
+  //   {
+  //     title: "Benefits/value",
+  //     dataIndex: "benefits/value",
+  //     key: "benefits/value",
+  //   },
+  //   {
+  //     title: "Education Level",
+  //     dataIndex: "education_level",
+  //     key: "education_level",
+  //     render: (text) => {
+  //       let edu_levels = text.trim().split(",");
+  //       for (let i = 0; i < edu_levels.length; i++) {
+  //         edu_levels[i] = educationLevelData[parseInt(edu_levels[i])];
+  //       }
+  //       return <p>{edu_levels.join(", ")}</p>;
+  //     },
+  //   },
+  //   {
+  //     title: "Majors",
+  //     dataIndex: "majors",
+  //     key: "majors",
+  //     render: (text) => {
+  //       let majors = text.trim().split(",");
+  //       for (let i = 0; i < majors.length; i++) {
+  //         majors[i] = majorsData[parseInt(majors[i])];
+  //       }
+  //       return <p>{majors.join(", ")}</p>;
+  //     },
+  //   },
+  //   {
+  //     title: "Link",
+  //     dataIndex: "link",
+  //     key: "link",
+  //   },
+  //   {
+  //     title: "Requirements",
+  //     dataIndex: "requirements",
+  //     key: "requirements",
+  //   },
+  //   {
+  //     title: "Action",
+  //     key: "action",
+  //     render: (_, record) => {
+  //       return (
+  //         <Space size="middle">
+  //           <div className="flex-col">
+  //             <button
+  //               className="bg-cyan-400 p-2 rounded my-4"
+  //               onClick={() => {}}
+  //             >
+  //               Save
+  //             </button>
+  //             <button
+  //               className="bg-cyan-400 p-2 rounded my-4"
+  //               onClick={() => {}}
+  //             >
+  //               Delete
+  //             </button>
+  //           </div>
+  //         </Space>
+  //       );
+  //     },
+  //   },
+  // ];
+
+  const columns = [
     {
-      title: "Title",
-      dataIndex: "title",
-      key: "title",
+      title: "List URL",
+      dataIndex: "url",
+      key: "url",
     },
-    {
-      title: "Organization",
-      dataIndex: "organization",
-      key: "organization",
-    },
-    {
-      title: "Deadline",
-      dataIndex: "deadline",
-      key: "deadline",
-    },
-    {
-      title: "Type",
-      dataIndex: "type",
-      key: "type",
-      render: (text) => {
-        if (text === 1) {
-          return <p>Học bổng hỗ trợ khó khăn</p>;
-        } else if (text === 2) {
-          return <p>Học bổng doanh nghiệp</p>;
-        } else if (text === 3) {
-          return <p>Học bổng đại học/du học</p>;
-        }
-        return text;
-      },
-    },
-    {
-      title: "Benefits/value",
-      dataIndex: "benefits/value",
-      key: "benefits/value",
-    },
-    {
-      title: "Education Level",
-      dataIndex: "education_level",
-      key: "education_level",
-      render: (text) => {
-        let edu_levels = text.trim().split(",");
-        for (let i = 0; i < edu_levels.length; i++) {
-          edu_levels[i] = educationLevelData[parseInt(edu_levels[i])];
-        }
-        return <p>{edu_levels.join(", ")}</p>;
-      },
-    },
-    {
-      title: "Majors",
-      dataIndex: "majors",
-      key: "majors",
-      render: (text) => {
-        let majors = text.trim().split(",");
-        for (let i = 0; i < majors.length; i++) {
-          majors[i] = majorsData[parseInt(majors[i])];
-        }
-        return <p>{majors.join(", ")}</p>;
-      },
-    },
-    {
-      title: "Link",
-      dataIndex: "link",
-      key: "link",
-    },
-    {
-      title: "Requirements",
-      dataIndex: "requirements",
-      key: "requirements",
-    },
+
     {
       title: "Action",
       key: "action",
-      render: (_, record) => {
+      render: (_: any, record: any) => {
+        console.log(record);
         return (
           <Space size="middle">
-            <div className="flex-col">
+            <div className="flex">
               <button
-                className="bg-cyan-400 p-2 rounded my-4"
+                className="bg-cyan-400 p-2 rounded m-4"
                 onClick={() => {}}
               >
                 Save
               </button>
               <button
-                className="bg-cyan-400 p-2 rounded my-4"
+                className="bg-cyan-400 p-2 rounded m-4"
                 onClick={() => {}}
               >
                 Delete
@@ -154,27 +189,43 @@ const ApiPage = () => {
 
   const [url, setUrl] = useState("");
   const navigate = useNavigate();
-  const [data, setData] = useState<Array<DataType>>([]);
+  const [data, setData] = useState<Array<any>>([]);
   const [isLoading, setIsLoading] = useState(false);
 
   const getDataFromURL = async () => {
+    setIsLoading(true);
     try {
-      setIsLoading(true);
-      // const resPathType = await ScholarshipServices.getScholarshipDataFromUrl(
-      //   url,
-      //   "path_type",
-      // );
-      // // const resQueryType = await ScholarshipServices.getScholarshipDataFromUrl(
-      // //   url,
-      // //   "query_type",
-      // // );
-      // console.log("resPathType: ", resPathType);
+      const resPathType = await axios
+        .create({ baseURL: "http://localhost:8000/" })
+        .get(`/api/task5(path_type)/${url}`);
+      const resQueryType = await axios
+        .create({ baseURL: "http://localhost:8000/" })
+        .get(`/api/task5(query_type)/${url}`);
 
+      let filterArr: any = [];
+      resPathType.data.result.forEach((link: any) => {
+        if (!filterArr.includes(link.trim())) {
+          filterArr.push(link.trim());
+        }
+      });
+      console.log("resQueryType: ", resQueryType);
+      resQueryType.data.result.forEach((link: any) => {
+        if (!filterArr.includes(link.trim())) {
+          filterArr.push(link.trim());
+        }
+      });
+      let extracPath: any = [];
+      filterArr.forEach((link: any) => {
+        extracPath.push({
+          url: link,
+        });
+      });
+      setData(extracPath);
       // console.log("resQueryType: ", resQueryType);
-      setIsLoading(false);
     } catch (err) {
       console.log("err: ", err);
     }
+    setIsLoading(false);
   };
 
   const handleSearch = () => {
@@ -208,7 +259,7 @@ const ApiPage = () => {
       </div>
       <h2 className="font-bold text-xl m-4">Get data</h2>
       <div className="my-4 flex justify-center ">
-        <div className="w-[500px]">
+        <div className="w-[1000px]">
           <form className="w-full">
             <div className="relative">
               <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">

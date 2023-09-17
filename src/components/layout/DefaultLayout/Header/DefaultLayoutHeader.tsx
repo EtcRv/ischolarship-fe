@@ -48,7 +48,7 @@ const DefaultLayoutHeader = () => {
         )}
         {isLogin && (
           <div className="flex justify-center font-sans ">
-            <button
+            {/* <button
               className="relative inline-flex mx-6"
               onClick={() => navigate("/recommend")}
             >
@@ -65,7 +65,7 @@ const DefaultLayoutHeader = () => {
                 99+
               </div>
               <AiOutlineStar className="w-7 h-7" />
-            </button>
+            </button> */}
             <div className="flex mx-6 relative group/userbar">
               <button
                 className="w-7 h-7 mr-2"

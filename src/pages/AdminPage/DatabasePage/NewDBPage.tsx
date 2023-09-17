@@ -293,6 +293,7 @@ const NewDBPage = () => {
 
     try {
       const res = await ScholarshipServices.getAllScholarByPage(pageNumber);
+      console.log("res: ", res);
       const newTableData: Array<DataType> = [];
       setScholarshipPageData(res.data.scholarship);
       res.data.scholarship.forEach((scholarshipData: Scholarship) => {

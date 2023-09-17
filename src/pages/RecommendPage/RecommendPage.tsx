@@ -1,7 +1,7 @@
 import DefaultLayout from "src/components/layout/DefaultLayout/DefaultLayout";
 import ProfilePageSideBar from "src/components/userPageSideBar/ProfilePageSideBar";
 import { Scholarship } from "src/models";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { IoMdRemoveCircleOutline } from "react-icons/io";
 import { AiOutlinePlus } from "react-icons/ai";
 import SelectedFilter from "./components/SelectedFilter";
@@ -107,6 +107,7 @@ const allMajorsValues = [
 ];
 
 const RecommendPage = () => {
+  const token = useSelector((state: any) => state.user.token);
   const [isGetting, setIsGetting] = useState(false);
   const [showFilter, setShowFilter] = useState(false);
   const [typeFilter, setTypeFilter] = useState<Array<ValueFilterType>>([]);
@@ -118,10 +119,29 @@ const RecommendPage = () => {
   const [showAddNewEducation, setShowAddNewEducation] = useState(false);
   const [showAddNewMajor, setShowAddNewMajor] = useState(false);
   const [listRecommend, setListRecommend] = useState<Array<Scholarship>>([]);
+  const [userRecommendList, setUserRecommendList] = useState<
+    Array<Scholarship>
+  >([]);
   const [recommendMode, setRecommendMode] = useState(
     useSelector((state: any) => state.setting.isRecommend),
   );
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    getScholarshipByUser();
+  }, []);
+
+  const getScholarshipByUser = async () => {
+    const res = await ScholarshipServices.getRecommendationByUser(token);
+    const newListRecommend: Array<Scholarship> = [];
+
+    res.data.recommend.forEach(async (id: string) => {
+      const response = await ScholarshipServices.getScholarshipInformation(id);
+      newListRecommend.push(response.data);
+    });
+    setUserRecommendList(newListRecommend);
+    console.log("Done");
+  };
 
   const getRecommendScholarship = async () => {
     setListRecommend([]);
@@ -381,25 +401,33 @@ const RecommendPage = () => {
               </div>
             )}
           </div>
+          <div className="flex-col p-6 text-start items-center">
+            <div className="flex w-full justify-end">
+              {recommendMode && (
+                <button
+                  className="flex mt-2 rounded bg-green-400 text-white p-2.5 items-center pointer border-[1px] border-grey-200 hover:bg-green-500"
+                  onClick={() => {
+                    setListRecommend([]);
+                    setIsGetting(true);
+                    setTimeout(() => {
+                      setListRecommend(userRecommendList);
+                      setIsGetting(false);
+                    }, 2000);
+                  }}
+                >
+                  Recommend To User
+                </button>
+              )}
+            </div>
+          </div>
           {isGetting && (
             <div className="flex p-6 justify-center items-center">
               <Spin tip="Loading" size="large" />
             </div>
           )}
           <div className="flex-col p-6 text-start items-center">
-            <div className="flex w-full justify-end">
-              {recommendMode && (
-                <button
-                  className="flex mt-2 rounded bg-green-400 text-white p-2.5 items-center pointer border-[1px] border-grey-200 hover:bg-green-500"
-                  onClick={async () => {}}
-                >
-                  Recommend By User
-                </button>
-              )}
-            </div>
-          </div>
-          <div className="flex-col p-6 text-start items-center">
             {listRecommend.map((scholarship: Scholarship, idx: any) => {
+              console.log("scholarship: ", scholarship);
               return (
                 <div
                   className="my-4 bg-white border-2 border-grey-200 drop-shadow-md shadow-stone-100"

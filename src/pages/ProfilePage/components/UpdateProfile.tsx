@@ -191,13 +191,13 @@ const UpdateProfile = (props: any) => {
                 },
               }),
             );
-            await UserServices.updateUserInfo(props.token, {
-              education_level: education_level,
-              nationality: nationality,
-              sex: gender,
-              date_of_birth: dob,
-              phone: phone,
-            });
+            // await UserServices.updateUserInfo(props.token, {
+            //   education_level: education_level,
+            //   nationality: nationality,
+            //   sex: gender,
+            //   date_of_birth: dob,
+            //   phone: phone,
+            // });
             props.changePageStatus("profile");
           }}
         >

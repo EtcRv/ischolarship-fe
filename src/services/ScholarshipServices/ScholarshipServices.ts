@@ -29,10 +29,18 @@ const ScholarshipServices = {
   getScholarshipDataFromUrl(url: string, type: string) {
     return API().get(`/api/task5(${type})/${url}`);
   },
-  // getRecommendationByUser(token: string) {
-  //   const headers = { authorization: token };
-  //   return API().get('/api/')
-  // }
+  getRecommendationByUser(token: string) {
+    const headers = { authorization: token };
+    return API().get('/api/recommend',{
+      headers,
+      params: {
+        model: "BPR",
+        type_model: "general",
+        k: 10,
+        method: "BM25",
+      }
+    })
+  }
 };
 
 export default ScholarshipServices;
