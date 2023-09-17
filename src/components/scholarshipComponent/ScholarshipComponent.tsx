@@ -12,8 +12,8 @@ import { useSelector } from "react-redux";
 
 const typeData = [
   "Học bổng hỗ trợ khó khăn",
-  "Học bổng doanh nghiệp",
   "Học bổng đại học/ du học",
+  "Học bổng doanh nghiệp",
 ];
 const educationLevelData = [
   "Tất cả các ngành hoặc không có thông tin cụ thể",

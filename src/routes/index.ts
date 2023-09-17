@@ -7,6 +7,7 @@ import {
   SettingPage,
   ScholarshipDetailPage,
 } from "../pages";
+import ApiPage from "src/pages/AdminPage/ApiPage/ApiPage";
 
 const routes = [
   // {
@@ -45,6 +46,10 @@ const routes = [
     path: '/admin/database',
     component: NewDBPage,
   },
+  {
+    path: '/admin/api',
+    component: ApiPage
+  }
 ];
 
 export { routes };

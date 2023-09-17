@@ -1,4 +1,4 @@
-import { Space, Table, Tag, Button, Modal, Select } from "antd";
+import { Space, Table, Tag, Button, Modal, Select, Spin } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { useEffect, useState } from "react";
 import { Scholarship } from "src/models";
@@ -10,6 +10,10 @@ import { IoMdRemoveCircleOutline } from "react-icons/io";
 import { AiOutlinePlus } from "react-icons/ai";
 import TextArea from "antd/es/input/TextArea";
 import Search from "./Search";
+import { useNavigate } from "react-router-dom";
+import { Checkbox } from "antd";
+import type { CheckboxChangeEvent } from "antd/es/checkbox";
+import SuccessMessage from "src/components/successMessage/SuccessMessage";
 interface DataType {
   _id: string;
   title: string;
@@ -25,8 +29,8 @@ interface DataType {
 
 const typeData = [
   "Học bổng hỗ trợ khó khăn",
-  "Học bổng doanh nghiệp",
   "Học bổng đại học/ du học",
+  "Học bổng doanh nghiệp",
 ];
 const educationLevelData = [
   "Tất cả các ngành hoặc không có thông tin cụ thể",
@@ -43,7 +47,7 @@ const majorsData = [
   "Kiến trúc và xây dựng",
   "Kinh doanh và thương mại",
   "Công nghệ thông tin",
-  " Luật - nhân văn",
+  "Luật - nhân văn",
   "Báo chí - Khoa học xã hội",
   "Y tế",
   "Khoa học cơ bản",
@@ -112,11 +116,11 @@ const NewDBPage = () => {
         return <p>{majors.join(", ")}</p>;
       },
     },
-    {
-      title: "Link",
-      dataIndex: "link",
-      key: "link",
-    },
+    // {
+    //   title: "Link",
+    //   dataIndex: "link",
+    //   key: "link",
+    // },
     {
       title: "Requirements",
       dataIndex: "requirements",
@@ -145,6 +149,8 @@ const NewDBPage = () => {
     },
   ];
 
+  const navigate = useNavigate();
+  const [allScholarshipData, setAllScholarshipData] = useState([]);
   const [data, setData] = useState<Array<DataType>>([]);
   const [scholarshipPageData, setScholarshipPageData] = useState<
     Array<Scholarship>
@@ -166,33 +172,78 @@ const NewDBPage = () => {
   );
   const [showAddNewMajor, setShowAddNewMajor] = useState(false);
   const [showAddNewEducation, setShowAddNewEducation] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const changeFilterTodayStatus = (e: CheckboxChangeEvent) => {
+    const checkedValue = e.target.checked;
+    if (checkedValue) {
+      setData([
+        allScholarshipData[0],
+        allScholarshipData[1],
+        allScholarshipData[2],
+      ]);
+    } else {
+      setData(scholarshipPageData);
+    }
+  };
 
   const showModal = () => {
     setIsModalOpen(true);
   };
   const handleOk = async () => {
-    setIsModalOpen(false);
-    let finalEduVal: any = [];
-    educationArrFilter.forEach((edu: any) =>
-      finalEduVal.push(educationLevelData.indexOf(edu)),
-    );
-    let finalMajorVal: any = [];
-    educationArrFilter.forEach((major: any) =>
-      finalMajorVal.push(majorsData.indexOf(major)),
-    );
-    const res = await ScholarshipServices.updateScholarshipInfo(idSelect, {
-      title: titleSelect,
-      organization: organizationSelect,
-      deadline: deadlineSelect,
-      type: typeSelect,
-      "benefits/value": valueSelect,
-      education_level: finalEduVal.join(","),
-      majors: educationArrFilter.join(","),
-      link: linkSelect,
-      requirements: requireSelect,
-    });
+    try {
+      setIsModalOpen(false);
+      let finalEduVal: any = [];
+      educationArrFilter.forEach((edu: any) =>
+        finalEduVal.push(educationLevelData.indexOf(edu)),
+      );
+      let finalMajorVal: any = [];
+      majorArrFilter.forEach((major: any) => {
+        finalMajorVal.push(majorsData.indexOf(major));
+      });
 
-    console.log("res: ", res);
+      const originalDate = new Date(deadlineSelect);
+      const year = originalDate.getFullYear();
+      const month = String(originalDate.getMonth() + 1).padStart(2, "0"); // Month is zero-based
+      const day = String(originalDate.getDate()).padStart(2, "0");
+
+      // Create the formatted string
+      const formattedDate = `${year}-${month}-${day}T00:00:00`;
+
+      const res = await ScholarshipServices.updateScholarshipInfo(idSelect, {
+        title: titleSelect,
+        organization: organizationSelect,
+        deadline: formattedDate,
+        type: typeData.indexOf(typeSelect),
+        "benefits/value": valueSelect,
+        education_level: finalEduVal.join(","),
+        majors: finalMajorVal.join(","),
+        link: linkSelect,
+        requirements: requireSelect,
+      });
+
+      const newDataShow = data.map((d: any, idx: any) => {
+        if (d._id === idSelect)
+          return {
+            _id: idSelect,
+            title: titleSelect,
+            organization: organizationSelect,
+            deadline: formattedDate,
+            type: typeData.indexOf(typeSelect),
+            "benefits/value": valueSelect,
+            education_level: finalEduVal.join(","),
+            majors: finalMajorVal.join(","),
+            link: linkSelect,
+            requirements: requireSelect,
+          };
+        return d;
+      });
+      SuccessMessage("Success", "Update Successfull");
+      console.log("newDataShow[0]: ", newDataShow[0]);
+      setData(newDataShow);
+    } catch (err) {
+      console.log("err: ", err);
+    }
   };
 
   const handleCancel = () => {
@@ -212,7 +263,7 @@ const NewDBPage = () => {
     setValueSelect(record["benefits/value"]);
     setLinkSelect(record.link);
     setRequireSelect(record.requirements);
-    setTypeSelect(typeData[parseInt(record.type)]);
+    setTypeSelect(record.type);
     let eduArr = record.education_level.trim().split(",");
     for (let i = 0; i < eduArr.length; i++) {
       eduArr[i] = educationLevelData[parseInt(eduArr[i])];
@@ -220,7 +271,7 @@ const NewDBPage = () => {
     setEducationArrLevel(eduArr);
     let majorArr = record.majors.trim().split(",");
     for (let i = 0; i < majorArr.length; i++) {
-      majorArr[i] = educationLevelData[parseInt(majorArr[i])];
+      majorArr[i] = majorsData[parseInt(majorArr[i])];
     }
     setMajorArrFilter(majorArr);
   };
@@ -238,33 +289,51 @@ const NewDBPage = () => {
   };
 
   const getScholarshipDataByPage = async (pageNumber: number) => {
-    const res = await ScholarshipServices.getAllScholarByPage(pageNumber);
-    const newTableData: Array<DataType> = [];
-    setScholarshipPageData(res.data.scholarship);
-    res.data.scholarship.forEach((scholarshipData: Scholarship) => {
-      const arr: DataType = {
-        _id: scholarshipData._id,
-        title: scholarshipData.title,
-        organization: scholarshipData.organization,
-        deadline: scholarshipData.deadline,
-        type: scholarshipData.type,
-        "benefits/value": scholarshipData["benefits/value"],
-        education_level: scholarshipData.education_level,
-        majors: scholarshipData.majors,
-        link: scholarshipData.link,
-        requirements: scholarshipData.requirements,
-      };
-      newTableData.push(arr);
-    });
-    let newAllPageNumber = [];
-    for (var i = 1; i <= res.data.total_page; i++) {
-      newAllPageNumber.push(i);
+    setIsLoading(true);
+
+    try {
+      const res = await ScholarshipServices.getAllScholarByPage(pageNumber);
+      const newTableData: Array<DataType> = [];
+      setScholarshipPageData(res.data.scholarship);
+      res.data.scholarship.forEach((scholarshipData: Scholarship) => {
+        const arr: DataType = {
+          _id: scholarshipData._id,
+          title: scholarshipData.title,
+          organization: scholarshipData.organization,
+          deadline: scholarshipData.deadline,
+          type: scholarshipData.type,
+          "benefits/value": scholarshipData["benefits/value"],
+          education_level: scholarshipData.education_level,
+          majors: scholarshipData.majors,
+          link: scholarshipData.link,
+          requirements: scholarshipData.requirements,
+        };
+        newTableData.push(arr);
+      });
+      let newAllPageNumber = [];
+      for (var i = 1; i <= res.data.total_page; i++) {
+        newAllPageNumber.push(i);
+      }
+      setData(newTableData);
+    } catch (err) {
+      console.log("err: ", err);
     }
-    setData(newTableData);
+    setIsLoading(false);
+  };
+
+  const getAllScholarshipData = async () => {
+    try {
+      const res = await ScholarshipServices.getAllScholar();
+      setAllScholarshipData(res.data.scholarship);
+      console.log("res: ", res);
+    } catch (err) {
+      console.log("err: ", err);
+    }
   };
 
   useEffect(() => {
     getScholarshipDataByPage(1);
+    getAllScholarshipData();
   }, []);
   return (
     <div className="bg-[#f5f5f5]">
@@ -276,25 +345,46 @@ const NewDBPage = () => {
             </span>
           </a>
           <div className="flex">
-            <button className="bg-green-400 p-2.5 rounded mx-2">
+            <button
+              className="bg-green-400 p-2.5 rounded mx-2"
+              onClick={() => navigate("/admin/database")}
+            >
               Database
             </button>
-            <button className="bg-green-400 p-2.5 rounded mx-2">API</button>
+            <button
+              className="bg-green-400 p-2.5 rounded mx-2"
+              onClick={() => navigate("/admin/api")}
+            >
+              API
+            </button>
           </div>
         </div>
       </div>
+      <h2 className="font-bold text-xl m-4">Modify Database</h2>
       <div className="my-4 flex justify-center ">
         <div className="w-[500px]">
           <Search
             setShowingData={setData}
-            scholarshipDataAll={scholarshipPageData}
+            scholarshipDataAll={allScholarshipData}
             setIsSearchingResult={(value: any) => console.log("Value: ", value)}
           ></Search>
         </div>
       </div>
-      <div className="p-2.5 my-10">
-        <Table columns={columns} dataSource={data} />
+      <div className="m-10">
+        <Checkbox onChange={changeFilterTodayStatus}>
+          <span className="font-bold text-xl">Show new data</span>
+        </Checkbox>
       </div>
+      {isLoading && (
+        <div className="flex justify-center my-8">
+          <Spin tip="Loading" size="large" />
+        </div>
+      )}
+      {!isLoading && (
+        <div className="p-2.5 my-10">
+          <Table columns={columns} dataSource={data} />
+        </div>
+      )}
       <Modal
         title="Change Scholarship Information"
         open={isModalOpen}
@@ -346,7 +436,11 @@ const NewDBPage = () => {
             <div className="flex flex-col my-6 mx-4">
               <label className="font-bold pb-2 flex">Scholarship type:</label>
               <Select
-                defaultValue={typeSelect}
+                value={
+                  /\d/.test(typeSelect)
+                    ? typeData[parseInt(typeSelect)]
+                    : typeSelect
+                }
                 style={{ width: 300 }}
                 onChange={changeType}
                 options={typeData.map((data) => ({ label: data, value: data }))}
@@ -398,7 +492,6 @@ const NewDBPage = () => {
               {showAddNewEducation && (
                 <div className="w-1/2">
                   <Select
-                    defaultValue={""}
                     style={{ width: 300 }}
                     onChange={(v) =>
                       addNewValueToArr(
@@ -461,16 +554,16 @@ const NewDBPage = () => {
               {showAddNewMajor && (
                 <div className="w-1/2">
                   <Select
-                    defaultValue={""}
                     style={{ width: 300 }}
-                    onChange={(v) =>
+                    onChange={(v) => {
+                      console.log("value: ", v);
                       addNewValueToArr(
                         v,
                         majorArrFilter,
                         setMajorArrFilter,
                         setShowAddNewMajor,
-                      )
-                    }
+                      );
+                    }}
                     options={majorsData.map((data) => ({
                       label: data,
                       value: data,

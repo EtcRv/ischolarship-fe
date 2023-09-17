@@ -197,7 +197,7 @@ const RecommendPage = () => {
                   className="flex mt-2 rounded bg-green-400 text-white p-2.5 items-center pointer border-[1px] border-grey-200 hover:bg-green-500"
                   onClick={() => setShowFilter(true)}
                 >
-                  Filter
+                  Recommend By Filter
                 </button>
               )}
               {showFilter && recommendMode && (
@@ -386,6 +386,18 @@ const RecommendPage = () => {
               <Spin tip="Loading" size="large" />
             </div>
           )}
+          <div className="flex-col p-6 text-start items-center">
+            <div className="flex w-full justify-end">
+              {recommendMode && (
+                <button
+                  className="flex mt-2 rounded bg-green-400 text-white p-2.5 items-center pointer border-[1px] border-grey-200 hover:bg-green-500"
+                  onClick={async () => {}}
+                >
+                  Recommend By User
+                </button>
+              )}
+            </div>
+          </div>
           <div className="flex-col p-6 text-start items-center">
             {listRecommend.map((scholarship: Scholarship, idx: any) => {
               return (

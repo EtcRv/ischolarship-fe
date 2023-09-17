@@ -25,7 +25,14 @@ const ScholarshipServices = {
         scholarship_id: scholarshipId
       }
     })
-  }
+  },
+  getScholarshipDataFromUrl(url: string, type: string) {
+    return API().get(`/api/task5(${type})/${url}`);
+  },
+  // getRecommendationByUser(token: string) {
+  //   const headers = { authorization: token };
+  //   return API().get('/api/')
+  // }
 };
 
 export default ScholarshipServices;
